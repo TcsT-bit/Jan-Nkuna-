@@ -5,232 +5,263 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Jan Nkuna Scientific Calculator</title>
 <style>
-    * { box-sizing: border-box; font-family: 'Roboto', Arial, sans-serif; }
+    * { box-sizing: border-box; font-family: 'Roboto', 'Segoe UI', Arial, sans-serif; }
   body {
-    background: #121212;
+    background: #000;
+    margin: 0;
+    padding: 0;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     min-height: 100vh;
-    margin: 0;
-    padding: 10px;
   }
   .calc {
-    background: #1e1e1e;
-    padding: 15px;
-    border-radius: 12px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.6);
-    width: 380px;
-    border: 1px solid #333;
+    width: 100%;
+    max-width: 480px;
+    background: #f5f5f5;
   }
-  .brand {
-    color: #bbb;
+  .status {
+    text-align: center;
+    padding: 8px;
     font-size: 12px;
-    font-weight: 500;
-    margin-bottom: 6px;
-    display: flex;
-    justify-content: space-between;
+    color: #666;
+    letter-spacing: 1px;
   }
   #display {
-    width: 100%;
-    height: 90px;
-    background: #d7e4d7;
-    color: #000;
-    font-size: 22px;
-    text-align: right;
-    border: none;
-    border-radius: 6px;
-    padding: 8px 12px;
-    margin-bottom: 12px;
-    font-family: 'Courier New', monospace;
+    background: #fff;
+    padding: 20px 16px;
+    min-height: 140px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-bottom: 1px solid #e0e0e0;
   }
   #expression {
-    font-size: 14px;
-    color: #333;
-    height: 20px;
-    overflow: hidden;
+    font-size: 18px;
+    color: #000;
+    min-height: 24px;
+    word-wrap: break-word;
   }
   #result {
-    font-size: 28px;
-    font-weight: bold;
+    font-size: 48px;
+    color: #000;
+    text-align: right;
+    font-weight: 300;
+  }
+  .mode {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 16px;
+    font-size: 12px;
+    color: #666;
   }
   .buttons {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
-    gap: 6px;
+    gap: 1px;
+    background: #e0e0e0;
   }
   button {
-    height: 45px;
-    font-size: 14px;
+    height: 56px;
     border: none;
-    border-radius: 6px;
-    background: #2d2d2d;
-    color: #fff;
+    font-size: 14px;
     cursor: pointer;
-    transition: 0.1s;
+    position: relative;
+    background: #e8e8e8;
+    color: #000;
   }
-  button:active {
-    transform: scale(0.95);
-    opacity: 0.8;
+  button:active { opacity: 0.7; }
+  .small {
+    font-size: 10px;
+    position: absolute;
+    top: 4px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    color: #666;
   }
-  .shift { background: #f4b400; color: #000; font-weight: bold; }
-  .alpha { background: #0f9d58; color: #fff; font-weight: bold; }
-  .func { background: #3c3c3c; color: #fff; font-size: 12px; }
-  .num { background: #424242; }
-  .op { background: #5f6368; }
-  .eq { background: #4285f4; grid-row: span 2; height: auto; }
-  .clear { background: #db4437; }
-  .small { font-size: 11px; }
+  .btn-content {
+    padding-top: 12px;
+  }
+  .shift { background: #4caf50; color: #fff; }
+  .orange { background: #ff9800; color: #fff; }
+  .light { background: #e8e8e8; color: #000; }
+  .dark { background: #424242; color: #fff; }
+  .blue { background: #64b5f6; color: #fff; }
+  .gray { background: #757575; color: #fff; }
 </style>
 </head>
 <body>
 <div class="calc">
-  <div class="brand">
-    <span>Jan Nkuna</span>
-    <span>fx-991EX</span>
-  </div>
+  <div class="status">GRAD &nbsp;&nbsp;&nbsp;&nbsp; M</div>
   <div id="display">
     <div id="expression"></div>
     <div id="result">0</div>
   </div>
+  <div class="mode">
+    <span>EXPR</span>
+    <span>CPLX</span>
+  </div>
   <div class="buttons">
-    <button class="shift" onclick="toggleShift()">SHIFT</button>
-    <button class="alpha" onclick="toggleAlpha()">ALPHA</button>
-    <button class="func" onclick="append('CALC')">CALC</button>
-    <button class="func" onclick="append('MODE')">MODE</button>
-    <button class="func" onclick="append('ON')">ON</button>
-    <button class="clear" onclick="clearAll()">AC</button>
+    <!-- Row 1 -->
+    <button class="shift"><div class="small">DRG</div><div class="btn-content">SHIFT</div></button>
+    <button class="light"><div class="small">FSE</div><div class="btn-content">MENU</div></button>
+    <button class="light"><div class="small">MTRX</div><div class="btn-content">◄</div></button>
+    <button class="light"><div class="small">Π</div><div class="btn-content">►</div></button>
+    <button class="orange"><div class="small">d/dx</div><div class="btn-content">⌫</div></button>
+    <button class="orange"><div class="small">CNST</div><div class="btn-content">AC</div></button>
 
-    <button class="func small" onclick="append('sin⁻¹(')">sin⁻¹</button>
-    <button class="func small" onclick="append('cos⁻¹(')">cos⁻¹</button>
-    <button class="func small" onclick="append('tan⁻¹(')">tan⁻¹</button>
-    <button class="func" onclick="append('x⁻¹')">x⁻¹</button>
-    <button class="func" onclick="append('log(')">log</button>
-    <button class="func" onclick="append('ln(')">ln</button>
+    <!-- Row 2 -->
+    <button class="light"><div class="small">hyp</div><div class="btn-content">DRG</div></button>
+    <button class="light"><div class="small">sin⁻¹</div><div class="btn-content">x⇄E</div></button>
+    <button class="light"><div class="small">cos⁻¹</div><div class="btn-content">⊞</div></button>
+    <button class="light"><div class="small">tan⁻¹</div><div class="btn-content">Σ</div></button>
+    <button class="light"><div class="small">∠</div><div class="btn-content">∫dx</div></button>
+    <button class="light"><div class="small">logₓy</div><div class="btn-content">CONV</div></button>
 
-    <button class="func" onclick="append(')">(</button>
-    <button class="func" onclick="append(')')">)</button>
-    <button class="func" onclick="append('x²')">x²</button>
-    <button class="func" onclick="append('x³')">x³</button>
-    <button class="func" onclick="append('xʸ')">xʸ</button>
-    <button class="func" onclick="append('√(')">√</button>
+    <!-- Row 3 -->
+    <button class="light"><div class="small">π</div><div class="btn-content">hyp</div></button>
+    <button class="light"><div class="small">sin</div><div class="btn-content">sin⁻¹</div></button>
+    <button class="light"><div class="small">cos</div><div class="btn-content">cos⁻¹</div></button>
+    <button class="light"><div class="small">tan</div><div class="btn-content">tan⁻¹</div></button>
+    <button class="light"><div class="small">i</div><div class="btn-content">∠</div></button>
+    <button class="light"><div class="small">e</div><div class="btn-content">logₓy</div></button>
 
-    <button class="func" onclick="append('ENG')">ENG</button>
-    <button class="func" onclick="append('(-)')">(-)</button>
-    <button class="num" onclick="append('7')">7</button>
-    <button class="num" onclick="append('8')">8</button>
-    <button class="num" onclick="append('9')">9</button>
-    <button class="clear" onclick="del()">DEL</button>
+    <!-- Row 4 -->
+    <button class="light"><div class="small">lim</div><div class="btn-content">π</div></button>
+    <button class="light"><div class="small">x³</div><div class="btn-content">sin</div></button>
+    <button class="light"><div class="small">∛x</div><div class="btn-content">cos</div></button>
+    <button class="light"><div class="small">ˣ√y</div><div class="btn-content">tan</div></button>
+    <button class="light"><div class="small">10ˣ</div><div class="btn-content">i</div></button>
+    <button class="light"><div class="small">eˣ</div><div class="btn-content">e</div></button>
 
-    <button class="func" onclick="append('RCL')">RCL</button>
-    <button class="func" onclick="append('STO')">STO</button>
-    <button class="num" onclick="append('4')">4</button>
-    <button class="num" onclick="append('5')">5</button>
-    <button class="num" onclick="append('6')">6</button>
-    <button class="op" onclick="append('*')">×</button>
+    <!-- Row 5 -->
+    <button class="light"><div class="small">STAT</div><div class="btn-content">x⁻¹</div></button>
+    <button class="light"><div class="small">aᵇ/꜀</div><div class="btn-content">x²</div></button>
+    <button class="light"><div class="small">Y</div><div class="btn-content">√x</div></button>
+    <button class="light"><div class="small">HISTORY</div><div class="btn-content">xʸ</div></button>
+    <button class="light"><div class="small">M+</div><div class="btn-content">log</div></button>
+    <button class="light"><div class="small">M-</div><div class="btn-content">ln</div></button>
 
-    <button class="func" onclick="append('HYP')">HYP</button>
-    <button class="func" onclick="append('Pol(')">Pol</button>
-    <button class="num" onclick="append('1')">1</button>
-    <button class="num" onclick="append('2')">2</button>
-    <button class="num" onclick="append('3')">3</button>
-    <button class="op" onclick="append('-')">−</button>
+    <!-- Row 6 -->
+    <button class="light"><div class="small">CPLX</div><div class="btn-content">D°M′S</div></button>
+    <button class="light"><div class="small">∞</div><div class="btn-content">ᵈ/꜀</div></button>
+    <button class="blue"><div class="small"></div><div class="btn-content">X</div></button>
+    <button class="blue"><div class="small"></div><div class="btn-content">XY,M</div></button>
+    <button class="blue"><div class="small"></div><div class="btn-content">MR</div></button>
+    <button class="blue"><div class="small"></div><div class="btn-content">x→M</div></button>
 
-    <button class="func" onclick="append('M+')">M+</button>
-    <button class="func" onclick="append('M-')">M-</button>
-    <button class="num" onclick="append('0')">0</button>
-    <button class="num" onclick="append('.')">.</button>
-    <button class="func" onclick="append('EXP')">EXP</button>
-    <button class="op" onclick="append('+')">+</button>
+    <!-- Row 7 -->
+    <button class="dark"><div class="small">n!</div><div class="btn-content">7</div></button>
+    <button class="dark"><div class="small">nCr</div><div class="btn-content">8</div></button>
+    <button class="dark"><div class="small">nPr</div><div class="btn-content">9</div></button>
+    <button class="gray"><div class="small">BIN</div><div class="btn-content">(</div></button>
+    <button class="gray"><div class="small">OCT</div><div class="btn-content">)</div></button>
+    <button class="gray"><div class="small"></div><div class="btn-content"></div></button>
 
-    <button class="func" onclick="append('ANS')">ANS</button>
-    <button class="func" onclick="append('Math.PI')">π</button>
-    <button class="func" onclick="append('Math.E')">e</button>
-    <button class="func" onclick="append('10^')">10ˣ</button>
-    <button class="eq" onclick="calculate()">=</button>
+    <!-- Row 8 -->
+    <button class="dark"><div class="small">gcd</div><div class="btn-content">4</div></button>
+    <button class="dark"><div class="small">lcm</div><div class="btn-content">5</div></button>
+    <button class="dark"><div class="small">abs</div><div class="btn-content">6</div></button>
+    <button class="gray"><div class="small">DEC</div><div class="btn-content">×</div></button>
+    <button class="gray"><div class="small">HEX</div><div class="btn-content">÷</div></button>
+    <button class="gray"><div class="small"></div><div class="btn-content"></div></button>
+
+    <!-- Row 9 -->
+    <button class="dark"><div class="small">OTHER</div><div class="btn-content">1</div></button>
+    <button class="dark"><div class="small">ran#</div><div class="btn-content">2</div></button>
+    <button class="dark"><div class="small">Ans</div><div class="btn-content">3</div></button>
+    <button class="gray"><div class="small">EXP SI</div><div class="btn-content">+</div></button>
+    <button class="gray"><div class="small"></div><div class="btn-content">-</div></button>
+    <button class="gray"><div class="small"></div><div class="btn-content"></div></button>
+
+    <!-- Row 10 -->
+    <button class="dark"><div class="small"></div><div class="btn-content">0</div></button>
+    <button class="dark"><div class="small"></div><div class="btn-content">.</div></button>
+    <button class="dark"><div class="small"></div><div class="btn-content">+/-</div></button>
+    <button class="gray"><div class="small"></div><div class="btn-content">EXP</div></button>
+    <button class="gray"><div class="small"></div><div class="btn-content">✓</div></button>
+    <button class="gray"><div class="small"></div><div class="btn-content"></div></button>
   </div>
 </div>
 
 <script>
-  let expression = '';
-  let result = '0';
-  let ans = 0;
-  let shift = false;
+let expression = '';
+let result = '0';
+let ans = 0;
+let shift = false;
 
-  const exprEl = document.getElementById('expression');
-  const resEl = document.getElementById('result');
+const exprEl = document.getElementById('expression');
+const resEl = document.getElementById('result');
 
-  function updateDisplay() {
-    exprEl.textContent = expression;
-    resEl.textContent = result;
-  }
+function updateDisplay() {
+  exprEl.textContent = expression;
+  resEl.textContent = result;
+}
 
-  function append(val) {
-    if (result === 'Error') result = '0';
-    expression += val;
-    updateDisplay();
-  }
-
-  function clearAll() {
-    expression = '';
-    result = '0';
-    updateDisplay();
-  }
-
-  function del() {
-    expression = expression.slice(0, -1);
-    updateDisplay();
-  }
-
-  function calculate() {
-    try {
-      let expr = expression
-        .replace(/ANS/g, ans)
-        .replace(/x²/g, '**2')
-        .replace(/x³/g, '**3')
-        .replace(/xʸ/g, '**')
-        .replace(/x⁻¹/g, '**-1')
-        .replace(/√\(/g, 'Math.sqrt(')
-        .replace(/sin⁻¹\(/g, 'Math.asin(')
-        .replace(/cos⁻¹\(/g, 'Math.acos(')
-        .replace(/tan⁻¹\(/g, 'Math.atan(')
-        .replace(/sin\(/g, 'Math.sin(')
-        .replace(/cos\(/g, 'Math.cos(')
-        .replace(/tan\(/g, 'Math.tan(')
-        .replace(/log\(/g, 'Math.log10(')
-        .replace(/ln\(/g, 'Math.log(')
-        .replace(/10\^/g, '10**')
-        .replace(/EXP/g, 'e');
-
-      let evalResult = eval(expr);
-      ans = evalResult;
-      result = parseFloat(evalResult.toPrecision(12)).toString();
-      expression = result;
-    } catch {
-      result = 'Error';
-    }
-    updateDisplay();
-  }
-
-  function toggleShift() {
-    shift = !shift;
-    document.querySelector('.shift').style.outline = shift ? '2px solid #f4b400' : 'none';
-  }
-
-  function toggleAlpha() {
-    alert('ALPHA mode: Not implemented in this version');
-  }
-
-  document.addEventListener('keydown', (e) => {
-    if ((e.key >= '0' && e.key <= '9') || e.key === '.') append(e.key);
-    if (['+', '-', '*', '/'].includes(e.key)) append(e.key);
-    if (e.key === 'Enter') calculate();
-    if (e.key === 'Backspace') del();
-    if (e.key === 'Escape') clearAll();
-    if (e.key === '(' || e.key === ')') append(e.key);
-  });
-
+function append(val) {
+  if (result === 'Error') { result = '0'; expression = ''; }
+  expression += val;
   updateDisplay();
+}
+
+function clearAll() {
+  expression = '';
+  result = '0';
+  updateDisplay();
+}
+
+function del() {
+  expression = expression.slice(0, -1);
+  updateDisplay();
+}
+
+function calculate() {
+  try {
+    let expr = expression
+      .replace(/x²/g, '**2')
+      .replace(/x³/g, '**3')
+      .replace(/xʸ/g, '**')
+      .replace(/x⁻¹/g, '**-1')
+      .replace(/√/g, 'Math.sqrt')
+      .replace(/sin⁻¹/g, 'Math.asin')
+      .replace(/cos⁻¹/g, 'Math.acos')
+      .replace(/tan⁻¹/g, 'Math.atan')
+      .replace(/sin/g, 'Math.sin')
+      .replace(/cos/g, 'Math.cos')
+      .replace(/tan/g, 'Math.tan')
+      .replace(/log/g, 'Math.log10')
+      .replace(/ln/g, 'Math.log')
+      .replace(/π/g, 'Math.PI')
+      .replace(/e/g, 'Math.E')
+      .replace(/ANS/g, ans)
+      .replace(/×/g, '*')
+      .replace(/÷/g, '/');
+
+    let evalResult = eval(expr);
+    ans = evalResult;
+    result = parseFloat(evalResult.toPrecision(12)).toString();
+    expression = result;
+  } catch {
+    result = 'Error';
+  }
+  updateDisplay();
+}
+
+// Keyboard support
+document.addEventListener('keydown', (e) => {
+  if (e.key >= '0' && e.key <= '9') append(e.key);
+  if (e.key === '.') append('.');
+  if (e.key === '+') append('+');
+  if (e.key === '-') append('-');
+  if (e.key === '*') append('*');
+  if (e.key === '/') append('/');
+  if (e.key === 'Enter') calculate();
+  if (e.key === 'Backspace') del();
+  if (e.key === 'Escape') clearAll();
+});
+
+updateDisplay();
 </script>
 </body>
 </html>
