@@ -68,16 +68,16 @@
     <button class="light" onclick="window.toggleMenu()" aria-label="Menu">
       <div class="small" data-normal="FSE" data-shift="FSE">FSE</div><div class="btn-content">MENU</div>
     </button>
-    <button class="light" onclick="window.moveLeft()" aria-label="Left">
+    <button class="light" onclick="window.handleKey('◄', 'MTRX')" aria-label="Left">
       <div class="small" data-normal="MTRX" data-shift="MTRX">MTRX</div><div class="btn-content">◄</div>
     </button>
-    <button class="light" onclick="window.moveRight()" aria-label="Right">
+    <button class="light" onclick="window.handleKey('►', 'Π')" aria-label="Right">
       <div class="small" data-normal="Π" data-shift="Π">Π</div><div class="btn-content">►</div>
     </button>
-    <button class="orange" onclick="window.del()" aria-label="Delete">
+    <button class="orange" onclick="window.handleKey('⌫', 'd/dx')" aria-label="Delete">
       <div class="small" data-normal="d/dx" data-shift="d/dx">d/dx</div><div class="btn-content">⌫</div>
     </button>
-    <button class="orange" onclick="window.clearAll()" aria-label="All Clear">
+    <button class="orange" onclick="window.handleKey('AC', 'CNST')" aria-label="All Clear">
       <div class="small" data-normal="CNST" data-shift="CNST">CNST</div><div class="btn-content">AC</div>
     </button>
 
@@ -102,7 +102,7 @@
     </button>
 
     <!-- Row 3 -->
-    <button class="light" onclick="window.append('pi')">
+    <button class="light" onclick="window.handleKey('pi', 'pi')">
       <div class="small" data-normal="π" data-shift="π">π</div><div class="btn-content">π</div>
     </button>
     <button class="light" onclick="window.handleKey('sin(', 'sin(')">
@@ -114,10 +114,10 @@
     <button class="light" onclick="window.handleKey('tan(', 'tan(')">
       <div class="small" data-normal="tan" data-shift="tan">tan</div><div class="btn-content">tan</div>
     </button>
-    <button class="light" onclick="window.append('i')">
+    <button class="light" onclick="window.handleKey('i', 'i')">
       <div class="small" data-normal="i" data-shift="i">i</div><div class="btn-content">i</div>
     </button>
-    <button class="light" onclick="window.append('e')">
+    <button class="light" onclick="window.handleKey('e', 'e')">
       <div class="small" data-normal="e" data-shift="e">e</div><div class="btn-content">e</div>
     </button>
 
@@ -125,53 +125,53 @@
     <button class="light" onclick="window.handleKey('lim(', 'lim(')">
       <div class="small" data-normal="lim" data-shift="lim">lim</div><div class="btn-content">lim</div>
     </button>
-    <button class="light" onclick="window.append('^3')">
+    <button class="light" onclick="window.handleKey('^3', '^3')">
       <div class="small" data-normal="x³" data-shift="x³">x³</div><div class="btn-content">x³</div>
     </button>
-    <button class="light" onclick="window.append('cbrt(')">
+    <button class="light" onclick="window.handleKey('cbrt(', 'cbrt(')">
       <div class="small" data-normal="∛x" data-shift="∛x">∛x</div><div class="btn-content">∛x</div>
     </button>
-    <button class="light" onclick="window.append('nthRoot(')">
+    <button class="light" onclick="window.handleKey('nthRoot(', 'nthRoot(')">
       <div class="small" data-normal="ˣ√y" data-shift="ˣ√y">ˣ√y</div><div class="btn-content">ˣ√y</div>
     </button>
-    <button class="light" onclick="window.append('10^')">
+    <button class="light" onclick="window.handleKey('10^', '10^')">
       <div class="small" data-normal="10ˣ" data-shift="10ˣ">10ˣ</div><div class="btn-content">10ˣ</div>
     </button>
-    <button class="light" onclick="window.append('exp(')">
+    <button class="light" onclick="window.handleKey('exp(', 'exp(')">
       <div class="small" data-normal="eˣ" data-shift="eˣ">eˣ</div><div class="btn-content">eˣ</div>
     </button>
 
     <!-- Row 5 -->
-    <button class="light" onclick="window.append('^-1')">
+    <button class="light" onclick="window.handleKey('^-1', '^-1')">
       <div class="small" data-normal="STAT" data-shift="STAT">STAT</div><div class="btn-content">x⁻¹</div>
     </button>
-    <button class="light" onclick="window.append('^2')">
+    <button class="light" onclick="window.handleKey('^2', '^2')">
       <div class="small" data-normal="aᵇ/꜀" data-shift="aᵇ/꜀">aᵇ/꜀</div><div class="btn-content">x²</div>
     </button>
-    <button class="light" onclick="window.append('sqrt(')">
+    <button class="light" onclick="window.handleKey('sqrt(', 'sqrt(')">
       <div class="small" data-normal="√x" data-shift="√x">√x</div><div class="btn-content">√x</div>
     </button>
-    <button class="light" onclick="window.append('^')">
+    <button class="light" onclick="window.handleKey('^', '^')">
       <div class="small" data-normal="HISTORY" data-shift="HISTORY">HISTORY</div><div class="btn-content">xʸ</div>
     </button>
-    <button class="light" onclick="window.append('log10(')">
+    <button class="light" onclick="window.handleKey('log10(', 'log10(')">
       <div class="small" data-normal="M+" data-shift="M+">M+</div><div class="btn-content">log</div>
     </button>
-    <button class="light" onclick="window.append('log(')">
+    <button class="light" onclick="window.handleKey('log(', 'log(')">
       <div class="small" data-normal="M-" data-shift="M-">M-</div><div class="btn-content">ln</div>
     </button>
 
     <!-- Row 6 -->
-    <button class="light" onclick="window.append('D°M′S')">
+    <button class="light" onclick="window.handleKey('D°M′S', 'D°M′S')">
       <div class="small">CPLX</div><div class="btn-content">D°M′S</div>
     </button>
-    <button class="light" onclick="window.append('∞')">
+    <button class="light" onclick="window.handleKey('∞', '∞')">
       <div class="small">∞</div><div class="btn-content">ᵈ/꜀</div>
     </button>
-    <button class="blue" onclick="window.append('X')"><div class="small"></div><div class="btn-content">X</div></button>
-    <button class="blue" onclick="window.append('XY,M')"><div class="small"></div><div class="btn-content">XY,M</div></button>
-    <button class="blue" onclick="window.append('MR')"><div class="small"></div><div class="btn-content">MR</div></button>
-    <button class="blue" onclick="window.append('x→M')"><div class="small"></div><div class="btn-content">x→M</div></button>
+    <button class="blue" onclick="window.handleKey('X', 'X')"><div class="small">X</div><div class="btn-content">X</div></button>
+    <button class="blue" onclick="window.handleKey('XY,M', 'XY,M')"><div class="small">XY,M</div><div class="btn-content">XY,M</div></button>
+    <button class="blue" onclick="window.handleKey('MR', 'MR')"><div class="small">MR</div><div class="btn-content">MR</div></button>
+    <button class="blue" onclick="window.handleKey('x→M', 'x→M')"><div class="small">x→M</div><div class="btn-content">x→M</div></button>
 
     <!-- Row 7 -->
     <button class="dark" onclick="window.handleKey('7', 'factorial(')">
@@ -183,10 +183,10 @@
     <button class="dark" onclick="window.handleKey('9', 'nPr(')">
       <div class="small" data-normal="nPr" data-shift="nPr">nPr</div><div class="btn-content">9</div>
     </button>
-    <button class="gray" onclick="window.append(')">
+    <button class="gray" onclick="window.handleKey('(', '(')">
       <div class="small">BIN</div><div class="btn-content">(</div>
     </button>
-    <button class="gray" onclick="window.append(')')">
+    <button class="gray" onclick="window.handleKey(')', ')')">
       <div class="small">OCT</div><div class="btn-content">)</div>
     </button>
     <button class="gray"></button>
@@ -201,28 +201,48 @@
     <button class="dark" onclick="window.handleKey('6', 'abs(')">
       <div class="small" data-normal="abs" data-shift="abs">abs</div><div class="btn-content">6</div>
     </button>
-    <button class="gray" onclick="window.append('*')">
+    <button class="gray" onclick="window.handleKey('*', '*')">
       <div class="small">DEC</div><div class="btn-content">×</div>
     </button>
-    <button class="gray" onclick="window.append('/')">
+    <button class="gray" onclick="window.handleKey('/', '/')">
       <div class="small">HEX</div><div class="btn-content">÷</div>
     </button>
     <button class="gray"></button>
 
     <!-- Row 9 -->
-    <button class="dark" onclick="window.append('1')"><div class="small">OTHER</div><div class="btn-content">1</div></button>
-    <button class="dark" onclick="window.append('2')"><div class="small">ran#</div><div class="btn-content">2</div></button>
-    <button class="dark" onclick="window.append('3')"><div class="small">Ans</div><div class="btn-content">3</div></button>
-    <button class="gray" onclick="window.append('+')"><div class="small">EXP SI</div><div class="btn-content">+</div></button>
-    <button class="gray" onclick="window.append('-')"><div class="small"></div><div class="btn-content">-</div></button>
+    <button class="dark" onclick="window.handleKey('1', 'OTHER')">
+      <div class="small">OTHER</div><div class="btn-content">1</div>
+    </button>
+    <button class="dark" onclick="window.handleKey('2', 'random()')">
+      <div class="small">ran#</div><div class="btn-content">2</div>
+    </button>
+    <button class="dark" onclick="window.handleKey('3', 'Ans')">
+      <div class="small">Ans</div><div class="btn-content">3</div>
+    </button>
+    <button class="gray" onclick="window.handleKey('+', '+')">
+      <div class="small">EXP SI</div><div class="btn-content">+</div>
+    </button>
+    <button class="gray" onclick="window.handleKey('-', '-')">
+      <div class="small"></div><div class="btn-content">-</div>
+    </button>
     <button class="gray"></button>
 
     <!-- Row 10 -->
-    <button class="dark" onclick="window.append('0')"><div class="small"></div><div class="btn-content">0</div></button>
-    <button class="dark" onclick="window.append('.')"><div class="small"></div><div class="btn-content">.</div></button>
-    <button class="dark" onclick="window.toggleNegate()"><div class="small"></div><div class="btn-content">+/-</div></button>
-    <button class="gray" onclick="window.append('e')"><div class="small"></div><div class="btn-content">EXP</div></button>
-    <button class="eq" onclick="window.calculate()"><div class="small"></div><div class="btn-content">✓</div></button>
+    <button class="dark" onclick="window.handleKey('0', '0')">
+      <div class="small"></div><div class="btn-content">0</div>
+    </button>
+    <button class="dark" onclick="window.handleKey('.', '.')">
+      <div class="small"></div><div class="btn-content">.</div>
+    </button>
+    <button class="dark" onclick="window.toggleNegate()">
+      <div class="small"></div><div class="btn-content">+/-</div>
+    </button>
+    <button class="gray" onclick="window.handleKey('e', 'e')">
+      <div class="small"></div><div class="btn-content">EXP</div>
+    </button>
+    <button class="eq" onclick="window.calculate()">
+      <div class="small"></div><div class="btn-content">✓</div>
+    </button>
     <button class="gray"></button>
   </div>
 </div>
@@ -373,7 +393,6 @@
     }
   }
 
-  // Expose functions to window so onclick works
   window.handleKey = handleKey;
   window.append = append;
   window.clearAll = clearAll;
