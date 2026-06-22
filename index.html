@@ -7,120 +7,94 @@
 <style>
     * { box-sizing: border-box; font-family: 'Roboto', Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
   html, body {
-    background: #000;
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    overflow: hidden;
+    background: #000; margin: 0; padding: 0; height: 100%; overflow: hidden;
   }
   .calc {
-    width: 100vw;
-    height: 100dvh; /* fixes mobile browser bar issue */
-    display: flex;
-    flex-direction: column;
-    background: #f5f5f5;
-    padding-top: env(safe-area-inset-top);
+    width: 100vw; height: 100dvh; display: flex; flex-direction: column;
+    background: #f5f5f5; padding-top: env(safe-area-inset-top);
     padding-bottom: env(safe-area-inset-bottom);
   }
   .status {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 6px 12px;
-    font-size: 11px;
-    color: #666;
-    letter-spacing: 0.5px;
-    flex-shrink: 0;
-    background: #f5f5f5;
-    min-height: 28px;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 6px 12px; font-size: 11px; color: #666; flex-shrink: 0;
+    background: #f5f5f5; min-height: 28px;
   }
-  .brand-name {
-    font-weight: 600;
-    color: #333;
-    font-size: 12px;
-    letter-spacing: 1px;
-  }
+  .brand-name { font-weight: 600; color: #333; font-size: 12px; }
   #display {
-    background: #fff;
-    padding: 10px 16px;
-    min-height: 0;
-    flex: 0 0 auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    background: #fff; padding: 10px 16px; flex: 0 0 auto;
+    display: flex; flex-direction: column; justify-content: space-between;
     border-bottom: 1px solid #e0e0e0;
   }
-  #expression {
-    font-size: 15px;
-    color: #000;
-    min-height: 18px;
-    word-wrap: break-word;
-    overflow: hidden;
-  }
-  #result {
-    font-size: 38px;
-    color: #000;
-    text-align: right;
-    font-weight: 300;
-    line-height: 1.1;
-  }
+  #expression { font-size: 15px; color: #000; min-height: 18px; word-wrap: break-word; overflow: hidden; }
+  #result { font-size: 38px; color: #000; text-align: right; font-weight: 300; line-height: 1.1; }
   .mode {
-    display: flex;
-    justify-content: space-between;
-    padding: 5px 16px;
-    font-size: 11px;
-    color: #666;
-    background: #f5f5f5;
-    flex-shrink: 0;
+    display: flex; justify-content: space-between; padding: 5px 16px;
+    font-size: 11px; color: #666; background: #f5f5f5; flex-shrink: 0;
   }
   .buttons {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 1px;
-    background: #e0e0e0;
-    flex: 1 1 auto;
-    min-height: 0;
+    display: grid; grid-template-columns: repeat(6, 1fr); gap: 1px;
+    background: #e0e0e0; flex: 1 1 auto; min-height: 0;
   }
   button {
-    border: none;
-    font-size: 12px;
-    cursor: pointer;
-    position: relative;
-    background: #e8e8e8;
-    color: #000;
-    padding: 0;
-    width: 100%;
-    height: 100%;
+    border: none; font-size: 12px; cursor: pointer; position: relative;
+    background: #e8e8e8; color: #000; padding: 0; width: 100%; height: 100%;
   }
   button:active { opacity: 0.7; }
   .small {
-    font-size: 8px;
-    position: absolute;
-    top: 2px;
-    left: 0;
-    right: 0;
-    text-align: center;
-    color: #666;
+    font-size: 8px; position: absolute; top: 2px; left: 0; right: 0;
+    text-align: center; color: #666;
   }
-  .btn-content {
-    padding-top: 9px;
-    font-size: 12px;
-  }
+  .btn-content { padding-top: 9px; font-size: 12px; }
   .shift { background: #4caf50; color: #fff; }
-  .alpha { background: #4caf50; color: #fff; }
   .orange { background: #ff9800; color: #fff; }
   .light { background: #e8e8e8; color: #000; }
   .dark { background: #424242; color: #fff; }
   .blue { background: #64b5f6; color: #fff; }
   .gray { background: #757575; color: #fff; }
   .eq { background: #4285f4; color: #fff; }
+  
+  /* Menu popup */
+  .menu-overlay {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.5); display: none; z-index: 100;
+  }
+  .menu-overlay.active { display: block; }
+  .menu {
+    position: absolute; top: 80px; left: 10px; width: 220px;
+    background: #2d2d2d; border-radius: 8px; overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  }
+  .menu-item {
+    display: flex; align-items: center; padding: 12px 16px;
+    color: #fff; font-size: 14px; cursor: pointer;
+  }
+  .menu-item:hover { background: #3d3d3d; }
+  .menu-item svg { margin-right: 12px; width: 20px; height: 20px; fill: #fff; }
+  .menu-divider { height: 1px; background: #444; margin: 4px 0; }
+  
+  /* Modal for Mode/Settings */
+  .modal {
+    position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    background: #2d2d2d; color: #fff; padding: 20px; border-radius: 8px;
+    display: none; z-index: 101; width: 90%; max-width: 300px;
+  }
+  .modal.active { display: block; }
+  .modal h3 { margin: 0 0 15px 0; font-size: 16px; }
+  .modal button {
+    background: #4285f4; color: #fff; padding: 8px 16px;
+    border-radius: 4px; margin-top: 10px; height: auto; width: auto;
+  }
+  select {
+    width: 100%; padding: 8px; background: #1e1e1e; color: #fff;
+    border: 1px solid #444; border-radius: 4px;
+  }
 </style>
 </head>
 <body>
 <div class="calc">
   <div class="status">
     <span class="brand-name">Jan Nkuna</span>
-    <span>GRAD &nbsp;&nbsp; M</span>
+    <span id="modeDisplay">DEG &nbsp;&nbsp; M</span>
   </div>
   <div id="display">
     <div id="expression"></div>
@@ -130,107 +104,108 @@
     <span>EXPR</span>
     <span>CPLX</span>
   </div>
-  <div class="buttons">
+  <div class="buttons" id="buttons">
     <!-- Row 1 -->
     <button class="shift" onclick="toggleShift()">
-      <div class="small">DRG</div><div class="btn-content">SHIFT</div>
+      <div class="small" data-shift="DRG">DRG</div><div class="btn-content">SHIFT</div>
     </button>
-    <button class="light" onclick="toggleAlpha()">
-      <div class="small">FSE</div><div class="btn-content">MENU</div>
+    <button class="light" onclick="toggleMenu()">
+      <div class="small" data-shift="FSE">FSE</div><div class="btn-content">MENU</div>
     </button>
     <button class="light" onclick="moveLeft()">
-      <div class="small">MTRX</div><div class="btn-content">◄</div>
+      <div class="small" data-shift="MTRX">MTRX</div><div class="btn-content">◄</div>
     </button>
     <button class="light" onclick="moveRight()">
-      <div class="small">Π</div><div class="btn-content">►</div>
+      <div class="small" data-shift="Π">Π</div><div class="btn-content">►</div>
     </button>
     <button class="orange" onclick="del()">
-      <div class="small">d/dx</div><div class="btn-content">⌫</div>
+      <div class="small" data-shift="d/dx">d/dx</div><div class="btn-content">⌫</div>
     </button>
     <button class="orange" onclick="clearAll()">
-      <div class="small">CNST</div><div class="btn-content">AC</div>
+      <div class="small" data-shift="CNST">CNST</div><div class="btn-content">AC</div>
     </button>
 
     <!-- Row 2 -->
-    <button class="light" onclick="append('DRG')">
-      <div class="small">hyp</div><div class="btn-content">DRG</div>
+    <button class="light" onclick="handleKey('DRG', 'hyp')">
+      <div class="small" data-shift="hyp">hyp</div><div class="btn-content">DRG</div>
     </button>
-    <button class="light" onclick="append('x⇄E')">
-      <div class="small">sin⁻¹</div><div class="btn-content">x⇄E</div>
+    <button class="light" onclick="handleKey('x⇄E', 'sin⁻¹(')">
+      <div class="small" data-shift="sin⁻¹">sin⁻¹</div><div class="btn-content">x⇄E</div>
     </button>
-    <button class="light" onclick="append('MTRX')">
-      <div class="small">cos⁻¹</div><div class="btn-content">⊞</div>
+    <button class="light" onclick="handleKey('MTRX', 'cos⁻¹(')">
+      <div class="small" data-shift="cos⁻¹">cos⁻¹</div><div class="btn-content">⊞</div>
     </button>
-    <button class="light" onclick="append('Σ')">
-      <div class="small">tan⁻¹</div><div class="btn-content">Σ</div>
+    <button class="light" onclick="handleKey('Σ', 'tan⁻¹(')">
+      <div class="small" data-shift="tan⁻¹">tan⁻¹</div><div class="btn-content">Σ</div>
     </button>
-    <button class="light" onclick="append('∫dx')">
-      <div class="small">∠</div><div class="btn-content">∫dx</div>
+    <button class="light" onclick="handleKey('∫dx', '∫')">
+      <div class="small" data-shift="∠">∠</div><div class="btn-content">∫dx</div>
     </button>
-    <button class="light" onclick="append('CONV')">
-      <div class="small">logₓy</div><div class="btn-content">CONV</div>
+    <button class="light" onclick="handleKey('CONV', 'logₓy(')">
+      <div class="small" data-shift="logₓy">logₓy</div><div class="btn-content">CONV</div>
     </button>
 
     <!-- Row 3 -->
-    <button class="light" onclick="append('Math.PI')">
-      <div class="small">π</div><div class="btn-content">π</div>
+    <button class="light" onclick="handleKey('Math.PI', 'π')">
+      <div class="small" data-shift="π">π</div><div class="btn-content">π</div>
     </button>
-    <button class="light" onclick="append('sin(')">
-      <div class="small">sin</div><div class="btn-content">sin</div>
+    <button class="light" onclick="handleKey('sin(', 'asin(')">
+      <div class="small" data-shift="sin">sin</div><div class="btn-content">sin</div>
     </button>
-    <button class="light" onclick="append('cos(')">
-      <div class="small">cos</div><div class="btn-content">cos</div>
+    <button class="light" onclick="handleKey('cos(', 'acos(')">
+      <div class="small" data-shift="cos">cos</div><div class="btn-content">cos</div>
     </button>
-    <button class="light" onclick="append('tan(')">
-      <div class="small">tan</div><div class="btn-content">tan</div>
+    <button class="light" onclick="handleKey('tan(', 'atan(')">
+      <div class="small" data-shift="tan">tan</div><div class="btn-content">tan</div>
     </button>
-    <button class="light" onclick="append('i')">
-      <div class="small">i</div><div class="btn-content">i</div>
+    <button class="light" onclick="handleKey('i', 'i')">
+      <div class="small" data-shift="i">i</div><div class="btn-content">i</div>
     </button>
-    <button class="light" onclick="append('Math.E')">
-      <div class="small">e</div><div class="btn-content">e</div>
+    <button class="light" onclick="handleKey('Math.E', 'e')">
+      <div class="small" data-shift="e">e</div><div class="btn-content">e</div>
     </button>
 
     <!-- Row 4 -->
-    <button class="light" onclick="append('lim')">
-      <div class="small">lim</div><div class="btn-content">lim</div>
+    <button class="light" onclick="handleKey('lim', 'lim')">
+      <div class="small" data-shift="lim">lim</div><div class="btn-content">lim</div>
     </button>
-    <button class="light" onclick="append('x³')">
-      <div class="small">x³</div><div class="btn-content">x³</div>
+    <button class="light" onclick="handleKey('x³', 'x³')">
+      <div class="small" data-shift="x³">x³</div><div class="btn-content">x³</div>
     </button>
-    <button class="light" onclick="append('∛x')">
-      <div class="small">∛x</div><div class="btn-content">∛x</div>
+    <button class="light" onclick="handleKey('∛x', 'cbrt(')">
+      <div class="small" data-shift="∛x">∛x</div><div class="btn-content">∛x</div>
     </button>
-    <button class="light" onclick="append('ˣ√y')">
-      <div class="small">ˣ√y</div><div class="btn-content">ˣ√y</div>
+    <button class="light" onclick="handleKey('ˣ√y', 'root(')">
+      <div class="small" data-shift="ˣ√y">ˣ√y</div><div class="btn-content">ˣ√y</div>
     </button>
-    <button class="light" onclick="append('10^')">
-      <div class="small">10ˣ</div><div class="btn-content">10ˣ</div>
+    <button class="light" onclick="handleKey('10^', '10**')">
+      <div class="small" data-shift="10ˣ">10ˣ</div><div class="btn-content">10ˣ</div>
     </button>
-    <button class="light" onclick="append('e^')">
-      <div class="small">eˣ</div><div class="btn-content">eˣ</div>
+    <button class="light" onclick="handleKey('e^', 'exp(')">
+      <div class="small" data-shift="eˣ">eˣ</div><div class="btn-content">eˣ</div>
     </button>
 
     <!-- Row 5 -->
-    <button class="light" onclick="append('x⁻¹')">
-      <div class="small">STAT</div><div class="btn-content">x⁻¹</div>
+    <button class="light" onclick="handleKey('x⁻¹', '**-1')">
+      <div class="small" data-shift="STAT">STAT</div><div class="btn-content">x⁻¹</div>
     </button>
-    <button class="light" onclick="append('x²')">
-      <div class="small">aᵇ/꜀</div><div class="btn-content">x²</div>
+    <button class="light" onclick="handleKey('x²', '**2')">
+      <div class="small" data-shift="aᵇ/꜀">aᵇ/꜀</div><div class="btn-content">x²</div>
     </button>
-    <button class="light" onclick="append('√(')">
-      <div class="small">Y</div><div class="btn-content">√x</div>
+    <button class="light" onclick="handleKey('√(', 'sqrt(')">
+      <div class="small" data-shift="Y">Y</div><div class="btn-content">√x</div>
     </button>
-    <button class="light" onclick="append('xʸ')">
-      <div class="small">HISTORY</div><div class="btn-content">xʸ</div>
+    <button class="light" onclick="handleKey('xʸ', '**')">
+      <div class="small" data-shift="HISTORY">HISTORY</div><div class="btn-content">xʸ</div>
     </button>
-    <button class="light" onclick="append('log(')">
-      <div class="small">M+</div><div class="btn-content">log</div>
+    <button class="light" onclick="handleKey('log(', 'log10(')">
+      <div class="small" data-shift="M+">M+</div><div class="btn-content">log</div>
     </button>
-    <button class="light" onclick="append('ln(')">
-      <div class="small">M-</div><div class="btn-content">ln</div>
+    <button class="light" onclick="handleKey('ln(', 'log(')">
+      <div class="small" data-shift="M-">M-</div><div class="btn-content">ln</div>
     </button>
 
+    <!-- Row 6-10 same as before, unchanged -->
     <!-- Row 6 -->
     <button class="light" onclick="append('D°M′S')">
       <div class="small">CPLX</div><div class="btn-content">D°M′S</div>
@@ -238,91 +213,98 @@
     <button class="light" onclick="append('ᵈ/꜀')">
       <div class="small">∞</div><div class="btn-content">ᵈ/꜀</div>
     </button>
-    <button class="blue" onclick="append('X')">
-      <div class="small"></div><div class="btn-content">X</div>
-    </button>
-    <button class="blue" onclick="append('XY,M')">
-      <div class="small"></div><div class="btn-content">XY,M</div>
-    </button>
-    <button class="blue" onclick="append('MR')">
-      <div class="small"></div><div class="btn-content">MR</div>
-    </button>
-    <button class="blue" onclick="append('x→M')">
-      <div class="small"></div><div class="btn-content">x→M</div>
-    </button>
+    <button class="blue" onclick="append('X')"><div class="small"></div><div class="btn-content">X</div></button>
+    <button class="blue" onclick="append('XY,M')"><div class="small"></div><div class="btn-content">XY,M</div></button>
+    <button class="blue" onclick="append('MR')"><div class="small"></div><div class="btn-content">MR</div></button>
+    <button class="blue" onclick="append('x→M')"><div class="small"></div><div class="btn-content">x→M</div></button>
 
     <!-- Row 7 -->
-    <button class="dark" onclick="append('7')">
-      <div class="small">n!</div><div class="btn-content">7</div>
-    </button>
-    <button class="dark" onclick="append('8')">
-      <div class="small">nCr</div><div class="btn-content">8</div>
-    </button>
-    <button class="dark" onclick="append('9')">
-      <div class="small">nPr</div><div class="btn-content">9</div>
-    </button>
-    <button class="gray" onclick="append(')">
-      <div class="small">BIN</div><div class="btn-content">(</div>
-    </button>
-    <button class="gray" onclick="append(')')">
-      <div class="small">OCT</div><div class="btn-content">)</div>
-    </button>
+    <button class="dark" onclick="handleKey('7', 'factorial(')"><div class="small">n!</div><div class="btn-content">7</div></button>
+    <button class="dark" onclick="handleKey('8', 'nCr(')"><div class="small">nCr</div><div class="btn-content">8</div></button>
+    <button class="dark" onclick="handleKey('9', 'nPr(')"><div class="small">nPr</div><div class="btn-content">9</div></button>
+    <button class="gray" onclick="append(')')"><div class="small">BIN</div><div class="btn-content">(</div></button>
+    <button class="gray" onclick="append(')')"><div class="small">OCT</div><div class="btn-content">)</div></button>
     <button class="gray"></button>
 
     <!-- Row 8 -->
-    <button class="dark" onclick="append('4')">
-      <div class="small">gcd</div><div class="btn-content">4</div>
-    </button>
-    <button class="dark" onclick="append('5')">
-      <div class="small">lcm</div><div class="btn-content">5</div>
-    </button>
-    <button class="dark" onclick="append('6')">
-      <div class="small">abs</div><div class="btn-content">6</div>
-    </button>
-    <button class="gray" onclick="append('*')">
-      <div class="small">DEC</div><div class="btn-content">×</div>
-    </button>
-    <button class="gray" onclick="append('/')">
-      <div class="small">HEX</div><div class="btn-content">÷</div>
-    </button>
+    <button class="dark" onclick="append('4')"><div class="small">gcd</div><div class="btn-content">4</div></button>
+    <button class="dark" onclick="append('5')"><div class="small">lcm</div><div class="btn-content">5</div></button>
+    <button class="dark" onclick="append('6')"><div class="small">abs</div><div class="btn-content">6</div></button>
+    <button class="gray" onclick="append('*')"><div class="small">DEC</div><div class="btn-content">×</div></button>
+    <button class="gray" onclick="append('/')"><div class="small">HEX</div><div class="btn-content">÷</div></button>
     <button class="gray"></button>
 
     <!-- Row 9 -->
-    <button class="dark" onclick="append('1')">
-      <div class="small">OTHER</div><div class="btn-content">1</div>
-    </button>
-    <button class="dark" onclick="append('2')">
-      <div class="small">ran#</div><div class="btn-content">2</div>
-    </button>
-    <button class="dark" onclick="append('3')">
-      <div class="small">Ans</div><div class="btn-content">3</div>
-    </button>
-    <button class="gray" onclick="append('+')">
-      <div class="small">EXP SI</div><div class="btn-content">+</div>
-    </button>
-    <button class="gray" onclick="append('-')">
-      <div class="small"></div><div class="btn-content">-</div>
-    </button>
+    <button class="dark" onclick="append('1')"><div class="small">OTHER</div><div class="btn-content">1</div></button>
+    <button class="dark" onclick="append('2')"><div class="small">ran#</div><div class="btn-content">2</div></button>
+    <button class="dark" onclick="append('3')"><div class="small">Ans</div><div class="btn-content">3</div></button>
+    <button class="gray" onclick="append('+')"><div class="small">EXP SI</div><div class="btn-content">+</div></button>
+    <button class="gray" onclick="append('-')"><div class="small"></div><div class="btn-content">-</div></button>
     <button class="gray"></button>
 
     <!-- Row 10 -->
-    <button class="dark" onclick="append('0')">
-      <div class="small"></div><div class="btn-content">0</div>
-    </button>
-    <button class="dark" onclick="append('.')">
-      <div class="small"></div><div class="btn-content">.</div>
-    </button>
-    <button class="dark" onclick="append('+/-')">
-      <div class="small"></div><div class="btn-content">+/-</div>
-    </button>
-    <button class="gray" onclick="append('EXP')">
-      <div class="small"></div><div class="btn-content">EXP</div>
-    </button>
-    <button class="eq" onclick="calculate()">
-      <div class="small"></div><div class="btn-content">✓</div>
-    </button>
+    <button class="dark" onclick="append('0')"><div class="small"></div><div class="btn-content">0</div></button>
+    <button class="dark" onclick="append('.')"><div class="small"></div><div class="btn-content">.</div></button>
+    <button class="dark" onclick="append('+/-')"><div class="small"></div><div class="btn-content">+/-</div></button>
+    <button class="gray" onclick="append('EXP')"><div class="small"></div><div class="btn-content">EXP</div></button>
+    <button class="eq" onclick="calculate()"><div class="small"></div><div class="btn-content">✓</div></button>
     <button class="gray"></button>
   </div>
+</div>
+
+<!-- Menu Overlay -->
+<div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()">
+  <div class="menu" onclick="event.stopPropagation()">
+    <div class="menu-item" onclick="openMode()">
+      <svg viewBox="0 0 24 24"><path d="M4 9h16v2H4zm0 4h16v2H4zM4 5h16v2H4z"/></svg>
+      Mode
+    </div>
+    <div class="menu-item" onclick="alert('Layout: Not implemented yet')">
+      <svg viewBox="0 0 24 24"><path d="M7 4V2h10v2h5v2h-2v16H4V8H2V6h5z"/></svg>
+      Layout
+    </div>
+    <div class="menu-item" onclick="alert('Theme: Not implemented yet')">
+      <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+      Theme
+    </div>
+    <div class="menu-item" onclick="alert('Settings: Not implemented yet')">
+      <svg viewBox="0 0 24 24"><path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-1.06l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.33-1.17.67-1.69 1.06l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69 1.06l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.33 1.17-.67 1.69-1.06l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65z"/></svg>
+      Settings
+    </div>
+    <div class="menu-item" onclick="alert('History: ' + history.join(', '))">
+      <svg viewBox="0 0 24 24"><path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.55.72-1.21-3.5-2.08V8H12z"/></svg>
+      History
+    </div>
+    <div class="menu-item" onclick="navigator.clipboard.writeText(result)">
+      <svg viewBox="0 0 24 24"><path d="M16 1H8c-1.1 0-2 .9-2 2v14h2V3h8V1zm3 4H9c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H9V7h10v14z"/></svg>
+      Clipboard
+    </div>
+    <div class="menu-divider"></div>
+    <div class="menu-item" onclick="alert('Help: Press SHIFT for secondary functions. MENU for settings.')">
+      <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+      Help
+    </div>
+    <div class="menu-item" onclick="alert('Jan Nkuna Calculator v1.0')">
+      <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+      About
+    </div>
+    <div class="menu-divider"></div>
+    <div class="menu-item" onclick="alert('Upgrade feature not available in this version')">
+      <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+      Upgrade or Ads
+    </div>
+  </div>
+</div>
+
+<!-- Mode Modal -->
+<div class="modal" id="modeModal">
+  <h3>Angle Mode</h3>
+  <select id="angleMode">
+    <option value="DEG">DEG - Degrees</option>
+    <option value="RAD">RAD - Radians</option>
+    <option value="GRAD">GRAD - Gradians</option>
+  </select>
+  <button onclick="setMode()">OK</button>
 </div>
 
 <script>
@@ -330,13 +312,23 @@
   let result = '0';
   let ans = 0;
   let shift = false;
+  let angleMode = 'DEG';
+  let history = [];
 
   const exprEl = document.getElementById('expression');
   const resEl = document.getElementById('result');
+  const modeDisplay = document.getElementById('modeDisplay');
 
   function updateDisplay() {
     exprEl.textContent = expression;
     resEl.textContent = result;
+    modeDisplay.textContent = angleMode + '    M';
+  }
+
+  function handleKey(normal, shiftVal) {
+    let val = shift ? shiftVal : normal;
+    append(val);
+    if(shift) toggleShift(); // auto-release shift after use
   }
 
   function append(val) {
@@ -346,14 +338,11 @@
   }
 
   function clearAll() {
-    expression = '';
-    result = '0';
-    updateDisplay();
+    expression = ''; result = '0'; updateDisplay();
   }
 
   function del() {
-    expression = expression.slice(0, -1);
-    updateDisplay();
+    expression = expression.slice(0, -1); updateDisplay();
   }
 
   function moveLeft() {}
@@ -368,41 +357,68 @@
         .replace(/xʸ/g, '**')
         .replace(/x⁻¹/g, '**-1')
         .replace(/√\(/g, 'Math.sqrt(')
-        .replace(/∛x/g, 'Math.cbrt(')
-        .replace(/ˣ√y/g, 'Math.pow(')
-        .replace(/sin⁻¹\(/g, 'Math.asin(')
-        .replace(/cos⁻¹\(/g, 'Math.acos(')
-        .replace(/tan⁻¹\(/g, 'Math.atan(')
-        .replace(/sin\(/g, 'Math.sin(')
-        .replace(/cos\(/g, 'Math.cos(')
-        .replace(/tan\(/g, 'Math.tan(')
-        .replace(/log\(/g, 'Math.log10(')
-        .replace(/ln\(/g, 'Math.log(')
-        .replace(/10\^/g, '10**')
-        .replace(/e\^/g, 'Math.exp(')
+        .replace(/cbrt\(/g, 'Math.cbrt(')
+        .replace(/sqrt\(/g, 'Math.sqrt(')
+        .replace(/asin\(/g, 'Math.asin(')
+        .replace(/acos\(/g, 'Math.acos(')
+        .replace(/atan\(/g, 'Math.atan(')
+        .replace(/sin\(/g, angleMode==='DEG' ? 'Math.sin(toRad(' : 'Math.sin(')
+        .replace(/cos\(/g, angleMode==='DEG' ? 'Math.cos(toRad(' : 'Math.cos(')
+        .replace(/tan\(/g, angleMode==='DEG' ? 'Math.tan(toRad(' : 'Math.tan(')
+        .replace(/log10\(/g, 'Math.log10(')
+        .replace(/log\(/g, 'Math.log(')
+        .replace(/exp\(/g, 'Math.exp(')
+        .replace(/10\*\*/g, '10**')
         .replace(/π/g, 'Math.PI')
         .replace(/e/g, 'Math.E')
         .replace(/EXP/g, 'e')
         .replace(/×/g, '*')
-        .replace(/÷/g, '/');
+        .replace(/÷/g, '/')
+        .replace(/factorial\(/g, 'factorial(')
+        .replace(/toRad\(/g, 'toRad(');
 
       let evalResult = eval(expr);
       ans = evalResult;
       result = parseFloat(evalResult.toPrecision(12)).toString();
       expression = result;
+      history.push(expression + ' = ' + result);
     } catch {
       result = 'Error';
     }
     updateDisplay();
   }
 
+  function toRad(deg) { return deg * Math.PI / 180; }
+  function factorial(n) {
+    if(n < 0) return NaN;
+    if(n === 0) return 1;
+    let f = 1;
+    for(let i=2; i<=n; i++) f *= i;
+    return f;
+  }
+
   function toggleShift() {
     shift = !shift;
     document.querySelector('.shift').style.outline = shift ? '2px solid #4caf50' : 'none';
+    // Update small labels
+    document.querySelectorAll('.small').forEach(el => {
+      if(el.dataset.shift) el.textContent = shift ? el.dataset.shift : el.textContent;
+    });
   }
 
-  function toggleAlpha() {
-    alert('ALPHA mode: Not implemented in this version');
+  function toggleMenu() {
+    document.getElementById('menuOverlay').classList.toggle('active');
+  }
+
+  function openMode() {
+    toggleMenu();
+    document.getElementById('modeModal').classList.add('active');
+  }
+
+  function setMode() {
+    angleMode = document.getElementById('angleMode').value;
+    document.getElementById('modeModal').classList.remove('active');
+    updateDisplay();
   }
 
   document.addEventListener('keydown', (e) => {
