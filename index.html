@@ -61,23 +61,23 @@
     <span>CPLX</span>
   </div>
   <div class="buttons" id="buttons">
-    <!-- Row 1 -->
+    <!-- Row 1 - Command buttons call functions directly -->
     <button class="shift" onclick="window.toggleShift()" aria-label="Shift">
       <div class="small" data-normal="DRG" data-shift="DRG">DRG</div><div class="btn-content">SHIFT</div>
     </button>
     <button class="light" onclick="window.toggleMenu()" aria-label="Menu">
       <div class="small" data-normal="FSE" data-shift="FSE">FSE</div><div class="btn-content">MENU</div>
     </button>
-    <button class="light" onclick="window.handleKey('◄', 'MTRX')" aria-label="Left">
+    <button class="light" onclick="window.moveLeft()" aria-label="Left">
       <div class="small" data-normal="MTRX" data-shift="MTRX">MTRX</div><div class="btn-content">◄</div>
     </button>
-    <button class="light" onclick="window.handleKey('►', 'Π')" aria-label="Right">
+    <button class="light" onclick="window.moveRight()" aria-label="Right">
       <div class="small" data-normal="Π" data-shift="Π">Π</div><div class="btn-content">►</div>
     </button>
-    <button class="orange" onclick="window.handleKey('⌫', 'd/dx')" aria-label="Delete">
+    <button class="orange" onclick="window.del()" aria-label="Delete">
       <div class="small" data-normal="d/dx" data-shift="d/dx">d/dx</div><div class="btn-content">⌫</div>
     </button>
-    <button class="orange" onclick="window.handleKey('AC', 'CNST')" aria-label="All Clear">
+    <button class="orange" onclick="window.clearAll()" aria-label="All Clear">
       <div class="small" data-normal="CNST" data-shift="CNST">CNST</div><div class="btn-content">AC</div>
     </button>
 
@@ -315,7 +315,9 @@
   }
 
   function clearAll() {
-    expression = ''; result = '0'; updateDisplay();
+    expression = ''; result = '0'; shift = false; 
+    document.querySelector('.shift').style.outline = 'none';
+    updateDisplay();
   }
 
   function del() {
@@ -329,8 +331,12 @@
     }
   }
 
-  function moveLeft() {}
-  function moveRight() {}
+  function moveLeft() {
+    // Placeholder for cursor movement
+  }
+  function moveRight() {
+    // Placeholder for cursor movement
+  }
 
   function calculate() {
     try {
