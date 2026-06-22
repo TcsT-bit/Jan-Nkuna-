@@ -4,8 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Jan Nkuna Scientific Calculator</title>
+<script type="importmap">
+{
+  "imports": {
+    "mathjs": "https://cdn.jsdelivr.net/npm/mathjs@11.11.0/+esm"
+  }
+}
+</script>
 <style>
-    * { box-sizing: border-box; font-family: 'Roboto', Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
+    * { box-sizing: border-box; font-family: 'Roboto', Arial, sans-serif; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
   html, body {
     background: #000; margin: 0; padding: 0; height: 100%; overflow: hidden;
   }
@@ -36,15 +43,15 @@
     background: #e0e0e0; flex: 1 1 auto; min-height: 0;
   }
   button {
-    border: none; font-size: 12px; cursor: pointer; position: relative;
+    border: none; font-size: 16px; cursor: pointer; position: relative;
     background: #e8e8e8; color: #000; padding: 0; width: 100%; height: 100%;
   }
   button:active { opacity: 0.7; }
   .small {
-    font-size: 8px; position: absolute; top: 2px; left: 0; right: 0;
+    font-size: 9px; position: absolute; top: 2px; left: 0; right: 0;
     text-align: center; color: #666;
   }
-  .btn-content { padding-top: 9px; font-size: 12px; }
+  .btn-content { padding-top: 10px; font-size: 14px; }
   .shift { background: #4caf50; color: #fff; }
   .orange { background: #ff9800; color: #fff; }
   .light { background: #e8e8e8; color: #000; }
@@ -53,7 +60,6 @@
   .gray { background: #757575; color: #fff; }
   .eq { background: #4285f4; color: #fff; }
   
-  /* Menu popup */
   .menu-overlay {
     position: fixed; top: 0; left: 0; right: 0; bottom: 0;
     background: rgba(0,0,0,0.5); display: none; z-index: 100;
@@ -69,10 +75,8 @@
     color: #fff; font-size: 14px; cursor: pointer;
   }
   .menu-item:hover { background: #3d3d3d; }
-  .menu-item svg { margin-right: 12px; width: 20px; height: 20px; fill: #fff; }
   .menu-divider { height: 1px; background: #444; margin: 4px 0; }
   
-  /* Modal for Mode/Settings */
   .modal {
     position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
     background: #2d2d2d; color: #fff; padding: 20px; border-radius: 8px;
@@ -106,111 +110,110 @@
   </div>
   <div class="buttons" id="buttons">
     <!-- Row 1 -->
-    <button class="shift" onclick="toggleShift()">
-      <div class="small" data-shift="DRG">DRG</div><div class="btn-content">SHIFT</div>
+    <button class="shift" onclick="toggleShift()" aria-label="Shift">
+      <div class="small" data-normal="DRG" data-shift="DRG">DRG</div><div class="btn-content">SHIFT</div>
     </button>
-    <button class="light" onclick="toggleMenu()">
-      <div class="small" data-shift="FSE">FSE</div><div class="btn-content">MENU</div>
+    <button class="light" onclick="toggleMenu()" aria-label="Menu">
+      <div class="small" data-normal="FSE" data-shift="FSE">FSE</div><div class="btn-content">MENU</div>
     </button>
-    <button class="light" onclick="moveLeft()">
-      <div class="small" data-shift="MTRX">MTRX</div><div class="btn-content">◄</div>
+    <button class="light" onclick="moveLeft()" aria-label="Left">
+      <div class="small" data-normal="MTRX" data-shift="MTRX">MTRX</div><div class="btn-content">◄</div>
     </button>
-    <button class="light" onclick="moveRight()">
-      <div class="small" data-shift="Π">Π</div><div class="btn-content">►</div>
+    <button class="light" onclick="moveRight()" aria-label="Right">
+      <div class="small" data-normal="Π" data-shift="Π">Π</div><div class="btn-content">►</div>
     </button>
-    <button class="orange" onclick="del()">
-      <div class="small" data-shift="d/dx">d/dx</div><div class="btn-content">⌫</div>
+    <button class="orange" onclick="del()" aria-label="Delete">
+      <div class="small" data-normal="d/dx" data-shift="d/dx">d/dx</div><div class="btn-content">⌫</div>
     </button>
-    <button class="orange" onclick="clearAll()">
-      <div class="small" data-shift="CNST">CNST</div><div class="btn-content">AC</div>
+    <button class="orange" onclick="clearAll()" aria-label="All Clear">
+      <div class="small" data-normal="CNST" data-shift="CNST">CNST</div><div class="btn-content">AC</div>
     </button>
 
     <!-- Row 2 -->
-    <button class="light" onclick="handleKey('DRG', 'hyp')">
-      <div class="small" data-shift="hyp">hyp</div><div class="btn-content">DRG</div>
+    <button class="light" onclick="handleKey('hyp(', 'sinh(')">
+      <div class="small" data-normal="hyp" data-shift="sinh">hyp</div><div class="btn-content">DRG</div>
     </button>
-    <button class="light" onclick="handleKey('x⇄E', 'sin⁻¹(')">
-      <div class="small" data-shift="sin⁻¹">sin⁻¹</div><div class="btn-content">x⇄E</div>
+    <button class="light" onclick="handleKey('sin⁻¹(', 'asin(')">
+      <div class="small" data-normal="sin⁻¹" data-shift="asin">sin⁻¹</div><div class="btn-content">x⇄E</div>
     </button>
-    <button class="light" onclick="handleKey('MTRX', 'cos⁻¹(')">
-      <div class="small" data-shift="cos⁻¹">cos⁻¹</div><div class="btn-content">⊞</div>
+    <button class="light" onclick="handleKey('cos⁻¹(', 'acos(')">
+      <div class="small" data-normal="cos⁻¹" data-shift="acos">cos⁻¹</div><div class="btn-content">⊞</div>
     </button>
-    <button class="light" onclick="handleKey('Σ', 'tan⁻¹(')">
-      <div class="small" data-shift="tan⁻¹">tan⁻¹</div><div class="btn-content">Σ</div>
+    <button class="light" onclick="handleKey('tan⁻¹(', 'atan(')">
+      <div class="small" data-normal="tan⁻¹" data-shift="atan">tan⁻¹</div><div class="btn-content">Σ</div>
     </button>
-    <button class="light" onclick="handleKey('∫dx', '∫')">
-      <div class="small" data-shift="∠">∠</div><div class="btn-content">∫dx</div>
+    <button class="light" onclick="handleKey('∫(', '∫')">
+      <div class="small" data-normal="∠" data-shift="∠">∠</div><div class="btn-content">∫dx</div>
     </button>
-    <button class="light" onclick="handleKey('CONV', 'logₓy(')">
-      <div class="small" data-shift="logₓy">logₓy</div><div class="btn-content">CONV</div>
+    <button class="light" onclick="handleKey('logbase(', 'logbase(')">
+      <div class="small" data-normal="logₓy" data-shift="logₓy">logₓy</div><div class="btn-content">CONV</div>
     </button>
 
     <!-- Row 3 -->
-    <button class="light" onclick="handleKey('Math.PI', 'π')">
-      <div class="small" data-shift="π">π</div><div class="btn-content">π</div>
+    <button class="light" onclick="append('pi')">
+      <div class="small" data-normal="π" data-shift="π">π</div><div class="btn-content">π</div>
     </button>
-    <button class="light" onclick="handleKey('sin(', 'asin(')">
-      <div class="small" data-shift="sin">sin</div><div class="btn-content">sin</div>
+    <button class="light" onclick="handleKey('sin(', 'sin(')">
+      <div class="small" data-normal="sin" data-shift="sin">sin</div><div class="btn-content">sin</div>
     </button>
-    <button class="light" onclick="handleKey('cos(', 'acos(')">
-      <div class="small" data-shift="cos">cos</div><div class="btn-content">cos</div>
+    <button class="light" onclick="handleKey('cos(', 'cos(')">
+      <div class="small" data-normal="cos" data-shift="cos">cos</div><div class="btn-content">cos</div>
     </button>
-    <button class="light" onclick="handleKey('tan(', 'atan(')">
-      <div class="small" data-shift="tan">tan</div><div class="btn-content">tan</div>
+    <button class="light" onclick="handleKey('tan(', 'tan(')">
+      <div class="small" data-normal="tan" data-shift="tan">tan</div><div class="btn-content">tan</div>
     </button>
-    <button class="light" onclick="handleKey('i', 'i')">
-      <div class="small" data-shift="i">i</div><div class="btn-content">i</div>
+    <button class="light" onclick="append('i')">
+      <div class="small" data-normal="i" data-shift="i">i</div><div class="btn-content">i</div>
     </button>
-    <button class="light" onclick="handleKey('Math.E', 'e')">
-      <div class="small" data-shift="e">e</div><div class="btn-content">e</div>
+    <button class="light" onclick="append('e')">
+      <div class="small" data-normal="e" data-shift="e">e</div><div class="btn-content">e</div>
     </button>
 
     <!-- Row 4 -->
-    <button class="light" onclick="handleKey('lim', 'lim')">
-      <div class="small" data-shift="lim">lim</div><div class="btn-content">lim</div>
+    <button class="light" onclick="handleKey('lim(', 'lim(')">
+      <div class="small" data-normal="lim" data-shift="lim">lim</div><div class="btn-content">lim</div>
     </button>
-    <button class="light" onclick="handleKey('x³', 'x³')">
-      <div class="small" data-shift="x³">x³</div><div class="btn-content">x³</div>
+    <button class="light" onclick="append('^3')">
+      <div class="small" data-normal="x³" data-shift="x³">x³</div><div class="btn-content">x³</div>
     </button>
-    <button class="light" onclick="handleKey('∛x', 'cbrt(')">
-      <div class="small" data-shift="∛x">∛x</div><div class="btn-content">∛x</div>
+    <button class="light" onclick="append('cbrt(')">
+      <div class="small" data-normal="∛x" data-shift="∛x">∛x</div><div class="btn-content">∛x</div>
     </button>
-    <button class="light" onclick="handleKey('ˣ√y', 'root(')">
-      <div class="small" data-shift="ˣ√y">ˣ√y</div><div class="btn-content">ˣ√y</div>
+    <button class="light" onclick="append('nthRoot(')">
+      <div class="small" data-normal="ˣ√y" data-shift="ˣ√y">ˣ√y</div><div class="btn-content">ˣ√y</div>
     </button>
-    <button class="light" onclick="handleKey('10^', '10**')">
-      <div class="small" data-shift="10ˣ">10ˣ</div><div class="btn-content">10ˣ</div>
+    <button class="light" onclick="append('10^')">
+      <div class="small" data-normal="10ˣ" data-shift="10ˣ">10ˣ</div><div class="btn-content">10ˣ</div>
     </button>
-    <button class="light" onclick="handleKey('e^', 'exp(')">
-      <div class="small" data-shift="eˣ">eˣ</div><div class="btn-content">eˣ</div>
+    <button class="light" onclick="append('exp(')">
+      <div class="small" data-normal="eˣ" data-shift="eˣ">eˣ</div><div class="btn-content">eˣ</div>
     </button>
 
     <!-- Row 5 -->
-    <button class="light" onclick="handleKey('x⁻¹', '**-1')">
-      <div class="small" data-shift="STAT">STAT</div><div class="btn-content">x⁻¹</div>
+    <button class="light" onclick="append('^-1')">
+      <div class="small" data-normal="STAT" data-shift="STAT">STAT</div><div class="btn-content">x⁻¹</div>
     </button>
-    <button class="light" onclick="handleKey('x²', '**2')">
-      <div class="small" data-shift="aᵇ/꜀">aᵇ/꜀</div><div class="btn-content">x²</div>
+    <button class="light" onclick="append('^2')">
+      <div class="small" data-normal="aᵇ/꜀" data-shift="aᵇ/꜀">aᵇ/꜀</div><div class="btn-content">x²</div>
     </button>
-    <button class="light" onclick="handleKey('√(', 'sqrt(')">
-      <div class="small" data-shift="Y">Y</div><div class="btn-content">√x</div>
+    <button class="light" onclick="append('sqrt(')">
+      <div class="small" data-normal="√x" data-shift="√x">√x</div><div class="btn-content">√x</div>
     </button>
-    <button class="light" onclick="handleKey('xʸ', '**')">
-      <div class="small" data-shift="HISTORY">HISTORY</div><div class="btn-content">xʸ</div>
+    <button class="light" onclick="append('^')">
+      <div class="small" data-normal="HISTORY" data-shift="HISTORY">HISTORY</div><div class="btn-content">xʸ</div>
     </button>
-    <button class="light" onclick="handleKey('log(', 'log10(')">
-      <div class="small" data-shift="M+">M+</div><div class="btn-content">log</div>
+    <button class="light" onclick="append('log10(')">
+      <div class="small" data-normal="M+" data-shift="M+">M+</div><div class="btn-content">log</div>
     </button>
-    <button class="light" onclick="handleKey('ln(', 'log(')">
-      <div class="small" data-shift="M-">M-</div><div class="btn-content">ln</div>
+    <button class="light" onclick="append('log(')">
+      <div class="small" data-normal="M-" data-shift="M-">M-</div><div class="btn-content">ln</div>
     </button>
 
-    <!-- Row 6-10 same as before, unchanged -->
     <!-- Row 6 -->
     <button class="light" onclick="append('D°M′S')">
       <div class="small">CPLX</div><div class="btn-content">D°M′S</div>
     </button>
-    <button class="light" onclick="append('ᵈ/꜀')">
+    <button class="light" onclick="append('∞')">
       <div class="small">∞</div><div class="btn-content">ᵈ/꜀</div>
     </button>
     <button class="blue" onclick="append('X')"><div class="small"></div><div class="btn-content">X</div></button>
@@ -219,19 +222,39 @@
     <button class="blue" onclick="append('x→M')"><div class="small"></div><div class="btn-content">x→M</div></button>
 
     <!-- Row 7 -->
-    <button class="dark" onclick="handleKey('7', 'factorial(')"><div class="small">n!</div><div class="btn-content">7</div></button>
-    <button class="dark" onclick="handleKey('8', 'nCr(')"><div class="small">nCr</div><div class="btn-content">8</div></button>
-    <button class="dark" onclick="handleKey('9', 'nPr(')"><div class="small">nPr</div><div class="btn-content">9</div></button>
-    <button class="gray" onclick="append(')')"><div class="small">BIN</div><div class="btn-content">(</div></button>
-    <button class="gray" onclick="append(')')"><div class="small">OCT</div><div class="btn-content">)</div></button>
+    <button class="dark" onclick="append('factorial(')">
+      <div class="small" data-normal="n!" data-shift="n!">n!</div><div class="btn-content">7</div>
+    </button>
+    <button class="dark" onclick="append('nCr(')">
+      <div class="small" data-normal="nCr" data-shift="nCr">nCr</div><div class="btn-content">8</div>
+    </button>
+    <button class="dark" onclick="append('nPr(')">
+      <div class="small" data-normal="nPr" data-shift="nPr">nPr</div><div class="btn-content">9</div>
+    </button>
+    <button class="gray" onclick="append(')">
+      <div class="small">BIN</div><div class="btn-content">(</div>
+    </button>
+    <button class="gray" onclick="append(')')">
+      <div class="small">OCT</div><div class="btn-content">)</div>
+    </button>
     <button class="gray"></button>
 
     <!-- Row 8 -->
-    <button class="dark" onclick="append('4')"><div class="small">gcd</div><div class="btn-content">4</div></button>
-    <button class="dark" onclick="append('5')"><div class="small">lcm</div><div class="btn-content">5</div></button>
-    <button class="dark" onclick="append('6')"><div class="small">abs</div><div class="btn-content">6</div></button>
-    <button class="gray" onclick="append('*')"><div class="small">DEC</div><div class="btn-content">×</div></button>
-    <button class="gray" onclick="append('/')"><div class="small">HEX</div><div class="btn-content">÷</div></button>
+    <button class="dark" onclick="append('gcd(')">
+      <div class="small" data-normal="gcd" data-shift="gcd">gcd</div><div class="btn-content">4</div>
+    </button>
+    <button class="dark" onclick="append('lcm(')">
+      <div class="small" data-normal="lcm" data-shift="lcm">lcm</div><div class="btn-content">5</div>
+    </button>
+    <button class="dark" onclick="append('abs(')">
+      <div class="small" data-normal="abs" data-shift="abs">abs</div><div class="btn-content">6</div>
+    </button>
+    <button class="gray" onclick="append('*')">
+      <div class="small">DEC</div><div class="btn-content">×</div>
+    </button>
+    <button class="gray" onclick="append('/')">
+      <div class="small">HEX</div><div class="btn-content">÷</div>
+    </button>
     <button class="gray"></button>
 
     <!-- Row 9 -->
@@ -245,8 +268,8 @@
     <!-- Row 10 -->
     <button class="dark" onclick="append('0')"><div class="small"></div><div class="btn-content">0</div></button>
     <button class="dark" onclick="append('.')"><div class="small"></div><div class="btn-content">.</div></button>
-    <button class="dark" onclick="append('+/-')"><div class="small"></div><div class="btn-content">+/-</div></button>
-    <button class="gray" onclick="append('EXP')"><div class="small"></div><div class="btn-content">EXP</div></button>
+    <button class="dark" onclick="toggleNegate()"><div class="small"></div><div class="btn-content">+/-</div></button>
+    <button class="gray" onclick="append('e')"><div class="small"></div><div class="btn-content">EXP</div></button>
     <button class="eq" onclick="calculate()"><div class="small"></div><div class="btn-content">✓</div></button>
     <button class="gray"></button>
   </div>
@@ -255,44 +278,17 @@
 <!-- Menu Overlay -->
 <div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()">
   <div class="menu" onclick="event.stopPropagation()">
-    <div class="menu-item" onclick="openMode()">
-      <svg viewBox="0 0 24 24"><path d="M4 9h16v2H4zm0 4h16v2H4zM4 5h16v2H4z"/></svg>
-      Mode
-    </div>
-    <div class="menu-item" onclick="alert('Layout: Not implemented yet')">
-      <svg viewBox="0 0 24 24"><path d="M7 4V2h10v2h5v2h-2v16H4V8H2V6h5z"/></svg>
-      Layout
-    </div>
-    <div class="menu-item" onclick="alert('Theme: Not implemented yet')">
-      <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-      Theme
-    </div>
-    <div class="menu-item" onclick="alert('Settings: Not implemented yet')">
-      <svg viewBox="0 0 24 24"><path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-1.06l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.33-1.17.67-1.69 1.06l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69 1.06l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.33 1.17-.67 1.69-1.06l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65z"/></svg>
-      Settings
-    </div>
-    <div class="menu-item" onclick="alert('History: ' + history.join(', '))">
-      <svg viewBox="0 0 24 24"><path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.55.72-1.21-3.5-2.08V8H12z"/></svg>
-      History
-    </div>
-    <div class="menu-item" onclick="navigator.clipboard.writeText(result)">
-      <svg viewBox="0 0 24 24"><path d="M16 1H8c-1.1 0-2 .9-2 2v14h2V3h8V1zm3 4H9c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H9V7h10v14z"/></svg>
-      Clipboard
-    </div>
+    <div class="menu-item" onclick="openMode()">Mode</div>
+    <div class="menu-item" onclick="alert('Layout: Not implemented yet')">Layout</div>
+    <div class="menu-item" onclick="alert('Theme: Not implemented yet')">Theme</div>
+    <div class="menu-item" onclick="alert('Settings: Not implemented yet')">Settings</div>
+    <div class="menu-item" onclick="showHistory()">History</div>
+    <div class="menu-item" onclick="copyResult()">Clipboard</div>
     <div class="menu-divider"></div>
-    <div class="menu-item" onclick="alert('Help: Press SHIFT for secondary functions. MENU for settings.')">
-      <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-      Help
-    </div>
-    <div class="menu-item" onclick="alert('Jan Nkuna Calculator v1.0')">
-      <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-      About
-    </div>
+    <div class="menu-item" onclick="alert('Help: Press SHIFT for secondary functions. MENU for settings.')">Help</div>
+    <div class="menu-item" onclick="alert('Jan Nkuna Calculator v1.0')">About</div>
     <div class="menu-divider"></div>
-    <div class="menu-item" onclick="alert('Upgrade feature not available in this version')">
-      <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
-      Upgrade or Ads
-    </div>
+    <div class="menu-item" onclick="alert('Upgrade feature not available in this version')">Upgrade or Ads</div>
   </div>
 </div>
 
@@ -300,40 +296,51 @@
 <div class="modal" id="modeModal">
   <h3>Angle Mode</h3>
   <select id="angleMode">
-    <option value="DEG">DEG - Degrees</option>
-    <option value="RAD">RAD - Radians</option>
-    <option value="GRAD">GRAD - Gradians</option>
+    <option value="deg">DEG - Degrees</option>
+    <option value="rad">RAD - Radians</option>
+    <option value="grad">GRAD - Gradians</option>
   </select>
   <button onclick="setMode()">OK</button>
 </div>
 
-<script>
+<script type="module">
+  import * as math from 'mathjs';
+
   let expression = '';
   let result = '0';
   let ans = 0;
   let shift = false;
-  let angleMode = 'DEG';
+  let angleMode = 'deg';
   let history = [];
+  const MAX_HISTORY = 50;
 
   const exprEl = document.getElementById('expression');
   const resEl = document.getElementById('result');
   const modeDisplay = document.getElementById('modeDisplay');
 
+  // Create mathjs instance with angle mode config
+  const mathInstance = math.create(math.all, { angle: angleMode });
+
   function updateDisplay() {
     exprEl.textContent = expression;
     resEl.textContent = result;
-    modeDisplay.textContent = angleMode + '    M';
+    modeDisplay.textContent = angleMode.toUpperCase() + '    M';
+  }
+
+  function sanitizeInput(input) {
+    // Only allow safe characters and functions
+    return input.replace(/[^0-9+\-*/().,a-zA-Z^_ ]/g, '');
   }
 
   function handleKey(normal, shiftVal) {
     let val = shift ? shiftVal : normal;
     append(val);
-    if(shift) toggleShift(); // auto-release shift after use
+    if(shift) toggleShift();
   }
 
   function append(val) {
     if (result === 'Error') { result = '0'; expression = ''; }
-    expression += val;
+    expression += sanitizeInput(val);
     updateDisplay();
   }
 
@@ -345,64 +352,49 @@
     expression = expression.slice(0, -1); updateDisplay();
   }
 
+  function toggleNegate() {
+    if (expression) {
+      expression = `negate(${expression})`;
+      calculate();
+    }
+  }
+
   function moveLeft() {}
   function moveRight() {}
 
   function calculate() {
     try {
-      let expr = expression
-        .replace(/ANS/g, ans)
-        .replace(/x²/g, '**2')
-        .replace(/x³/g, '**3')
-        .replace(/xʸ/g, '**')
-        .replace(/x⁻¹/g, '**-1')
-        .replace(/√\(/g, 'Math.sqrt(')
-        .replace(/cbrt\(/g, 'Math.cbrt(')
-        .replace(/sqrt\(/g, 'Math.sqrt(')
-        .replace(/asin\(/g, 'Math.asin(')
-        .replace(/acos\(/g, 'Math.acos(')
-        .replace(/atan\(/g, 'Math.atan(')
-        .replace(/sin\(/g, angleMode==='DEG' ? 'Math.sin(toRad(' : 'Math.sin(')
-        .replace(/cos\(/g, angleMode==='DEG' ? 'Math.cos(toRad(' : 'Math.cos(')
-        .replace(/tan\(/g, angleMode==='DEG' ? 'Math.tan(toRad(' : 'Math.tan(')
-        .replace(/log10\(/g, 'Math.log10(')
-        .replace(/log\(/g, 'Math.log(')
-        .replace(/exp\(/g, 'Math.exp(')
-        .replace(/10\*\*/g, '10**')
-        .replace(/π/g, 'Math.PI')
-        .replace(/e/g, 'Math.E')
-        .replace(/EXP/g, 'e')
-        .replace(/×/g, '*')
-        .replace(/÷/g, '/')
-        .replace(/factorial\(/g, 'factorial(')
-        .replace(/toRad\(/g, 'toRad(');
-
-      let evalResult = eval(expr);
+      // Replace Ans with previous answer
+      let expr = expression.replace(/Ans/g, ans);
+      
+      // Evaluate with mathjs - no eval, safe parsing
+      let evalResult = mathInstance.evaluate(expr);
+      
+      // Handle complex numbers and large numbers
+      if (typeof evalResult === 'object' && evalResult.im !== undefined) {
+        result = evalResult.toString();
+      } else {
+        result = mathInstance.format(evalResult, { precision: 12 });
+      }
+      
       ans = evalResult;
-      result = parseFloat(evalResult.toPrecision(12)).toString();
       expression = result;
-      history.push(expression + ' = ' + result);
-    } catch {
+      
+      // Add to history with cap
+      history.push(expr + ' = ' + result);
+      if (history.length > MAX_HISTORY) history.shift();
+      
+    } catch (e) {
       result = 'Error';
     }
     updateDisplay();
   }
 
-  function toRad(deg) { return deg * Math.PI / 180; }
-  function factorial(n) {
-    if(n < 0) return NaN;
-    if(n === 0) return 1;
-    let f = 1;
-    for(let i=2; i<=n; i++) f *= i;
-    return f;
-  }
-
   function toggleShift() {
     shift = !shift;
     document.querySelector('.shift').style.outline = shift ? '2px solid #4caf50' : 'none';
-    // Update small labels
     document.querySelectorAll('.small').forEach(el => {
-      if(el.dataset.shift) el.textContent = shift ? el.dataset.shift : el.textContent;
+      el.textContent = shift ? el.dataset.shift : el.dataset.normal;
     });
   }
 
@@ -417,8 +409,23 @@
 
   function setMode() {
     angleMode = document.getElementById('angleMode').value;
+    mathInstance.config({ angle: angleMode });
     document.getElementById('modeModal').classList.remove('active');
     updateDisplay();
+  }
+
+  function showHistory() {
+    toggleMenu();
+    alert(history.slice(-10).join('\n'));
+  }
+
+  async function copyResult() {
+    try {
+      await navigator.clipboard.writeText(result);
+      alert('Copied to clipboard');
+    } catch (e) {
+      alert('Copy failed. Check permissions.');
+    }
   }
 
   document.addEventListener('keydown', (e) => {
