@@ -13,44 +13,18 @@
 </script>
 <style>
     * { box-sizing: border-box; font-family: 'Roboto', Arial, sans-serif; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
-  html, body {
-    background: #000; margin: 0; padding: 0; height: 100%; overflow: hidden;
-  }
-  .calc {
-    width: 100vw; height: 100dvh; display: flex; flex-direction: column;
-    background: #f5f5f5; padding-top: env(safe-area-inset-top);
-    padding-bottom: env(safe-area-inset-bottom);
-  }
-  .status {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 6px 12px; font-size: 11px; color: #666; flex-shrink: 0;
-    background: #f5f5f5; min-height: 28px;
-  }
+  html, body { background: #000; margin: 0; padding: 0; height: 100%; overflow: hidden; }
+  .calc { width: 100vw; height: 100dvh; display: flex; flex-direction: column; background: #f5f5f5; padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom); }
+  .status { display: flex; justify-content: space-between; align-items: center; padding: 6px 12px; font-size: 11px; color: #666; flex-shrink: 0; background: #f5f5f5; min-height: 28px; }
   .brand-name { font-weight: 600; color: #333; font-size: 12px; }
-  #display {
-    background: #fff; padding: 10px 16px; flex: 0 0 auto;
-    display: flex; flex-direction: column; justify-content: space-between;
-    border-bottom: 1px solid #e0e0e0;
-  }
+  #display { background: #fff; padding: 10px 16px; flex: 0 0 auto; display: flex; flex-direction: column; justify-content: space-between; border-bottom: 1px solid #e0e0e0; }
   #expression { font-size: 15px; color: #000; min-height: 18px; word-wrap: break-word; overflow: hidden; }
   #result { font-size: 38px; color: #000; text-align: right; font-weight: 300; line-height: 1.1; }
-  .mode {
-    display: flex; justify-content: space-between; padding: 5px 16px;
-    font-size: 11px; color: #666; background: #f5f5f5; flex-shrink: 0;
-  }
-  .buttons {
-    display: grid; grid-template-columns: repeat(6, 1fr); gap: 1px;
-    background: #e0e0e0; flex: 1 1 auto; min-height: 0;
-  }
-  button {
-    border: none; font-size: 16px; cursor: pointer; position: relative;
-    background: #e8e8e8; color: #000; padding: 0; width: 100%; height: 100%;
-  }
+  .mode { display: flex; justify-content: space-between; padding: 5px 16px; font-size: 11px; color: #666; background: #f5f5f5; flex-shrink: 0; }
+  .buttons { display: grid; grid-template-columns: repeat(6, 1fr); gap: 1px; background: #e0e0e0; flex: 1 1 auto; min-height: 0; }
+  button { border: none; font-size: 16px; cursor: pointer; position: relative; background: #e8e8e8; color: #000; padding: 0; width: 100%; height: 100%; }
   button:active { opacity: 0.7; }
-  .small {
-    font-size: 9px; position: absolute; top: 2px; left: 0; right: 0;
-    text-align: center; color: #666;
-  }
+  .small { font-size: 9px; position: absolute; top: 2px; left: 0; right: 0; text-align: center; color: #666; }
   .btn-content { padding-top: 10px; font-size: 14px; }
   .shift { background: #4caf50; color: #fff; }
   .orange { background: #ff9800; color: #fff; }
@@ -59,39 +33,17 @@
   .blue { background: #64b5f6; color: #fff; }
   .gray { background: #757575; color: #fff; }
   .eq { background: #4285f4; color: #fff; }
-  
-  .menu-overlay {
-    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0,0,0,0.5); display: none; z-index: 100;
-  }
+  .menu-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: none; z-index: 100; }
   .menu-overlay.active { display: block; }
-  .menu {
-    position: absolute; top: 80px; left: 10px; width: 220px;
-    background: #2d2d2d; border-radius: 8px; overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-  }
-  .menu-item {
-    display: flex; align-items: center; padding: 12px 16px;
-    color: #fff; font-size: 14px; cursor: pointer;
-  }
+  .menu { position: absolute; top: 80px; left: 10px; width: 220px; background: #2d2d2d; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
+  .menu-item { display: flex; align-items: center; padding: 12px 16px; color: #fff; font-size: 14px; cursor: pointer; }
   .menu-item:hover { background: #3d3d3d; }
   .menu-divider { height: 1px; background: #444; margin: 4px 0; }
-  
-  .modal {
-    position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-    background: #2d2d2d; color: #fff; padding: 20px; border-radius: 8px;
-    display: none; z-index: 101; width: 90%; max-width: 300px;
-  }
+  .modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #2d2d2d; color: #fff; padding: 20px; border-radius: 8px; display: none; z-index: 101; width: 90%; max-width: 300px; }
   .modal.active { display: block; }
   .modal h3 { margin: 0 0 15px 0; font-size: 16px; }
-  .modal button {
-    background: #4285f4; color: #fff; padding: 8px 16px;
-    border-radius: 4px; margin-top: 10px; height: auto; width: auto;
-  }
-  select {
-    width: 100%; padding: 8px; background: #1e1e1e; color: #fff;
-    border: 1px solid #444; border-radius: 4px;
-  }
+  .modal button { background: #4285f4; color: #fff; padding: 8px 16px; border-radius: 4px; margin-top: 10px; height: auto; width: auto; }
+  select { width: 100%; padding: 8px; background: #1e1e1e; color: #fff; border: 1px solid #444; border-radius: 4px; }
 </style>
 </head>
 <body>
@@ -110,180 +62,180 @@
   </div>
   <div class="buttons" id="buttons">
     <!-- Row 1 -->
-    <button class="shift" onclick="toggleShift()" aria-label="Shift">
+    <button class="shift" onclick="window.toggleShift()" aria-label="Shift">
       <div class="small" data-normal="DRG" data-shift="DRG">DRG</div><div class="btn-content">SHIFT</div>
     </button>
-    <button class="light" onclick="toggleMenu()" aria-label="Menu">
+    <button class="light" onclick="window.toggleMenu()" aria-label="Menu">
       <div class="small" data-normal="FSE" data-shift="FSE">FSE</div><div class="btn-content">MENU</div>
     </button>
-    <button class="light" onclick="moveLeft()" aria-label="Left">
+    <button class="light" onclick="window.moveLeft()" aria-label="Left">
       <div class="small" data-normal="MTRX" data-shift="MTRX">MTRX</div><div class="btn-content">◄</div>
     </button>
-    <button class="light" onclick="moveRight()" aria-label="Right">
+    <button class="light" onclick="window.moveRight()" aria-label="Right">
       <div class="small" data-normal="Π" data-shift="Π">Π</div><div class="btn-content">►</div>
     </button>
-    <button class="orange" onclick="del()" aria-label="Delete">
+    <button class="orange" onclick="window.del()" aria-label="Delete">
       <div class="small" data-normal="d/dx" data-shift="d/dx">d/dx</div><div class="btn-content">⌫</div>
     </button>
-    <button class="orange" onclick="clearAll()" aria-label="All Clear">
+    <button class="orange" onclick="window.clearAll()" aria-label="All Clear">
       <div class="small" data-normal="CNST" data-shift="CNST">CNST</div><div class="btn-content">AC</div>
     </button>
 
     <!-- Row 2 -->
-    <button class="light" onclick="handleKey('hyp(', 'sinh(')">
+    <button class="light" onclick="window.handleKey('hyp(', 'sinh(')">
       <div class="small" data-normal="hyp" data-shift="sinh">hyp</div><div class="btn-content">DRG</div>
     </button>
-    <button class="light" onclick="handleKey('sin⁻¹(', 'asin(')">
+    <button class="light" onclick="window.handleKey('asin(', 'asin(')">
       <div class="small" data-normal="sin⁻¹" data-shift="asin">sin⁻¹</div><div class="btn-content">x⇄E</div>
     </button>
-    <button class="light" onclick="handleKey('cos⁻¹(', 'acos(')">
+    <button class="light" onclick="window.handleKey('acos(', 'acos(')">
       <div class="small" data-normal="cos⁻¹" data-shift="acos">cos⁻¹</div><div class="btn-content">⊞</div>
     </button>
-    <button class="light" onclick="handleKey('tan⁻¹(', 'atan(')">
+    <button class="light" onclick="window.handleKey('atan(', 'atan(')">
       <div class="small" data-normal="tan⁻¹" data-shift="atan">tan⁻¹</div><div class="btn-content">Σ</div>
     </button>
-    <button class="light" onclick="handleKey('∫(', '∫')">
+    <button class="light" onclick="window.handleKey('∫(', '∫')">
       <div class="small" data-normal="∠" data-shift="∠">∠</div><div class="btn-content">∫dx</div>
     </button>
-    <button class="light" onclick="handleKey('logbase(', 'logbase(')">
+    <button class="light" onclick="window.handleKey('logbase(', 'logbase(')">
       <div class="small" data-normal="logₓy" data-shift="logₓy">logₓy</div><div class="btn-content">CONV</div>
     </button>
 
     <!-- Row 3 -->
-    <button class="light" onclick="append('pi')">
+    <button class="light" onclick="window.append('pi')">
       <div class="small" data-normal="π" data-shift="π">π</div><div class="btn-content">π</div>
     </button>
-    <button class="light" onclick="handleKey('sin(', 'sin(')">
+    <button class="light" onclick="window.handleKey('sin(', 'sin(')">
       <div class="small" data-normal="sin" data-shift="sin">sin</div><div class="btn-content">sin</div>
     </button>
-    <button class="light" onclick="handleKey('cos(', 'cos(')">
+    <button class="light" onclick="window.handleKey('cos(', 'cos(')">
       <div class="small" data-normal="cos" data-shift="cos">cos</div><div class="btn-content">cos</div>
     </button>
-    <button class="light" onclick="handleKey('tan(', 'tan(')">
+    <button class="light" onclick="window.handleKey('tan(', 'tan(')">
       <div class="small" data-normal="tan" data-shift="tan">tan</div><div class="btn-content">tan</div>
     </button>
-    <button class="light" onclick="append('i')">
+    <button class="light" onclick="window.append('i')">
       <div class="small" data-normal="i" data-shift="i">i</div><div class="btn-content">i</div>
     </button>
-    <button class="light" onclick="append('e')">
+    <button class="light" onclick="window.append('e')">
       <div class="small" data-normal="e" data-shift="e">e</div><div class="btn-content">e</div>
     </button>
 
     <!-- Row 4 -->
-    <button class="light" onclick="handleKey('lim(', 'lim(')">
+    <button class="light" onclick="window.handleKey('lim(', 'lim(')">
       <div class="small" data-normal="lim" data-shift="lim">lim</div><div class="btn-content">lim</div>
     </button>
-    <button class="light" onclick="append('^3')">
+    <button class="light" onclick="window.append('^3')">
       <div class="small" data-normal="x³" data-shift="x³">x³</div><div class="btn-content">x³</div>
     </button>
-    <button class="light" onclick="append('cbrt(')">
+    <button class="light" onclick="window.append('cbrt(')">
       <div class="small" data-normal="∛x" data-shift="∛x">∛x</div><div class="btn-content">∛x</div>
     </button>
-    <button class="light" onclick="append('nthRoot(')">
+    <button class="light" onclick="window.append('nthRoot(')">
       <div class="small" data-normal="ˣ√y" data-shift="ˣ√y">ˣ√y</div><div class="btn-content">ˣ√y</div>
     </button>
-    <button class="light" onclick="append('10^')">
+    <button class="light" onclick="window.append('10^')">
       <div class="small" data-normal="10ˣ" data-shift="10ˣ">10ˣ</div><div class="btn-content">10ˣ</div>
     </button>
-    <button class="light" onclick="append('exp(')">
+    <button class="light" onclick="window.append('exp(')">
       <div class="small" data-normal="eˣ" data-shift="eˣ">eˣ</div><div class="btn-content">eˣ</div>
     </button>
 
     <!-- Row 5 -->
-    <button class="light" onclick="append('^-1')">
+    <button class="light" onclick="window.append('^-1')">
       <div class="small" data-normal="STAT" data-shift="STAT">STAT</div><div class="btn-content">x⁻¹</div>
     </button>
-    <button class="light" onclick="append('^2')">
+    <button class="light" onclick="window.append('^2')">
       <div class="small" data-normal="aᵇ/꜀" data-shift="aᵇ/꜀">aᵇ/꜀</div><div class="btn-content">x²</div>
     </button>
-    <button class="light" onclick="append('sqrt(')">
+    <button class="light" onclick="window.append('sqrt(')">
       <div class="small" data-normal="√x" data-shift="√x">√x</div><div class="btn-content">√x</div>
     </button>
-    <button class="light" onclick="append('^')">
+    <button class="light" onclick="window.append('^')">
       <div class="small" data-normal="HISTORY" data-shift="HISTORY">HISTORY</div><div class="btn-content">xʸ</div>
     </button>
-    <button class="light" onclick="append('log10(')">
+    <button class="light" onclick="window.append('log10(')">
       <div class="small" data-normal="M+" data-shift="M+">M+</div><div class="btn-content">log</div>
     </button>
-    <button class="light" onclick="append('log(')">
+    <button class="light" onclick="window.append('log(')">
       <div class="small" data-normal="M-" data-shift="M-">M-</div><div class="btn-content">ln</div>
     </button>
 
     <!-- Row 6 -->
-    <button class="light" onclick="append('D°M′S')">
+    <button class="light" onclick="window.append('D°M′S')">
       <div class="small">CPLX</div><div class="btn-content">D°M′S</div>
     </button>
-    <button class="light" onclick="append('∞')">
+    <button class="light" onclick="window.append('∞')">
       <div class="small">∞</div><div class="btn-content">ᵈ/꜀</div>
     </button>
-    <button class="blue" onclick="append('X')"><div class="small"></div><div class="btn-content">X</div></button>
-    <button class="blue" onclick="append('XY,M')"><div class="small"></div><div class="btn-content">XY,M</div></button>
-    <button class="blue" onclick="append('MR')"><div class="small"></div><div class="btn-content">MR</div></button>
-    <button class="blue" onclick="append('x→M')"><div class="small"></div><div class="btn-content">x→M</div></button>
+    <button class="blue" onclick="window.append('X')"><div class="small"></div><div class="btn-content">X</div></button>
+    <button class="blue" onclick="window.append('XY,M')"><div class="small"></div><div class="btn-content">XY,M</div></button>
+    <button class="blue" onclick="window.append('MR')"><div class="small"></div><div class="btn-content">MR</div></button>
+    <button class="blue" onclick="window.append('x→M')"><div class="small"></div><div class="btn-content">x→M</div></button>
 
     <!-- Row 7 -->
-    <button class="dark" onclick="append('factorial(')">
+    <button class="dark" onclick="window.append('factorial(')">
       <div class="small" data-normal="n!" data-shift="n!">n!</div><div class="btn-content">7</div>
     </button>
-    <button class="dark" onclick="append('nCr(')">
+    <button class="dark" onclick="window.append('nCr(')">
       <div class="small" data-normal="nCr" data-shift="nCr">nCr</div><div class="btn-content">8</div>
     </button>
-    <button class="dark" onclick="append('nPr(')">
+    <button class="dark" onclick="window.append('nPr(')">
       <div class="small" data-normal="nPr" data-shift="nPr">nPr</div><div class="btn-content">9</div>
     </button>
-    <button class="gray" onclick="append(')">
+    <button class="gray" onclick="window.append(')">
       <div class="small">BIN</div><div class="btn-content">(</div>
     </button>
-    <button class="gray" onclick="append(')')">
+    <button class="gray" onclick="window.append(')')">
       <div class="small">OCT</div><div class="btn-content">)</div>
     </button>
     <button class="gray"></button>
 
     <!-- Row 8 -->
-    <button class="dark" onclick="append('gcd(')">
+    <button class="dark" onclick="window.append('gcd(')">
       <div class="small" data-normal="gcd" data-shift="gcd">gcd</div><div class="btn-content">4</div>
     </button>
-    <button class="dark" onclick="append('lcm(')">
+    <button class="dark" onclick="window.append('lcm(')">
       <div class="small" data-normal="lcm" data-shift="lcm">lcm</div><div class="btn-content">5</div>
     </button>
-    <button class="dark" onclick="append('abs(')">
+    <button class="dark" onclick="window.append('abs(')">
       <div class="small" data-normal="abs" data-shift="abs">abs</div><div class="btn-content">6</div>
     </button>
-    <button class="gray" onclick="append('*')">
+    <button class="gray" onclick="window.append('*')">
       <div class="small">DEC</div><div class="btn-content">×</div>
     </button>
-    <button class="gray" onclick="append('/')">
+    <button class="gray" onclick="window.append('/')">
       <div class="small">HEX</div><div class="btn-content">÷</div>
     </button>
     <button class="gray"></button>
 
     <!-- Row 9 -->
-    <button class="dark" onclick="append('1')"><div class="small">OTHER</div><div class="btn-content">1</div></button>
-    <button class="dark" onclick="append('2')"><div class="small">ran#</div><div class="btn-content">2</div></button>
-    <button class="dark" onclick="append('3')"><div class="small">Ans</div><div class="btn-content">3</div></button>
-    <button class="gray" onclick="append('+')"><div class="small">EXP SI</div><div class="btn-content">+</div></button>
-    <button class="gray" onclick="append('-')"><div class="small"></div><div class="btn-content">-</div></button>
+    <button class="dark" onclick="window.append('1')"><div class="small">OTHER</div><div class="btn-content">1</div></button>
+    <button class="dark" onclick="window.append('2')"><div class="small">ran#</div><div class="btn-content">2</div></button>
+    <button class="dark" onclick="window.append('3')"><div class="small">Ans</div><div class="btn-content">3</div></button>
+    <button class="gray" onclick="window.append('+')"><div class="small">EXP SI</div><div class="btn-content">+</div></button>
+    <button class="gray" onclick="window.append('-')"><div class="small"></div><div class="btn-content">-</div></button>
     <button class="gray"></button>
 
     <!-- Row 10 -->
-    <button class="dark" onclick="append('0')"><div class="small"></div><div class="btn-content">0</div></button>
-    <button class="dark" onclick="append('.')"><div class="small"></div><div class="btn-content">.</div></button>
-    <button class="dark" onclick="toggleNegate()"><div class="small"></div><div class="btn-content">+/-</div></button>
-    <button class="gray" onclick="append('e')"><div class="small"></div><div class="btn-content">EXP</div></button>
-    <button class="eq" onclick="calculate()"><div class="small"></div><div class="btn-content">✓</div></button>
+    <button class="dark" onclick="window.append('0')"><div class="small"></div><div class="btn-content">0</div></button>
+    <button class="dark" onclick="window.append('.')"><div class="small"></div><div class="btn-content">.</div></button>
+    <button class="dark" onclick="window.toggleNegate()"><div class="small"></div><div class="btn-content">+/-</div></button>
+    <button class="gray" onclick="window.append('e')"><div class="small"></div><div class="btn-content">EXP</div></button>
+    <button class="eq" onclick="window.calculate()"><div class="small"></div><div class="btn-content">✓</div></button>
     <button class="gray"></button>
   </div>
 </div>
 
 <!-- Menu Overlay -->
-<div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()">
+<div class="menu-overlay" id="menuOverlay" onclick="window.toggleMenu()">
   <div class="menu" onclick="event.stopPropagation()">
-    <div class="menu-item" onclick="openMode()">Mode</div>
+    <div class="menu-item" onclick="window.openMode()">Mode</div>
     <div class="menu-item" onclick="alert('Layout: Not implemented yet')">Layout</div>
     <div class="menu-item" onclick="alert('Theme: Not implemented yet')">Theme</div>
     <div class="menu-item" onclick="alert('Settings: Not implemented yet')">Settings</div>
-    <div class="menu-item" onclick="showHistory()">History</div>
-    <div class="menu-item" onclick="copyResult()">Clipboard</div>
+    <div class="menu-item" onclick="window.showHistory()">History</div>
+    <div class="menu-item" onclick="window.copyResult()">Clipboard</div>
     <div class="menu-divider"></div>
     <div class="menu-item" onclick="alert('Help: Press SHIFT for secondary functions. MENU for settings.')">Help</div>
     <div class="menu-item" onclick="alert('Jan Nkuna Calculator v1.0')">About</div>
@@ -300,7 +252,7 @@
     <option value="rad">RAD - Radians</option>
     <option value="grad">GRAD - Gradians</option>
   </select>
-  <button onclick="setMode()">OK</button>
+  <button onclick="window.setMode()">OK</button>
 </div>
 
 <script type="module">
@@ -318,7 +270,6 @@
   const resEl = document.getElementById('result');
   const modeDisplay = document.getElementById('modeDisplay');
 
-  // Create mathjs instance with angle mode config
   const mathInstance = math.create(math.all, { angle: angleMode });
 
   function updateDisplay() {
@@ -328,7 +279,6 @@
   }
 
   function sanitizeInput(input) {
-    // Only allow safe characters and functions
     return input.replace(/[^0-9+\-*/().,a-zA-Z^_ ]/g, '');
   }
 
@@ -364,13 +314,9 @@
 
   function calculate() {
     try {
-      // Replace Ans with previous answer
       let expr = expression.replace(/Ans/g, ans);
-      
-      // Evaluate with mathjs - no eval, safe parsing
       let evalResult = mathInstance.evaluate(expr);
       
-      // Handle complex numbers and large numbers
       if (typeof evalResult === 'object' && evalResult.im !== undefined) {
         result = evalResult.toString();
       } else {
@@ -380,7 +326,6 @@
       ans = evalResult;
       expression = result;
       
-      // Add to history with cap
       history.push(expr + ' = ' + result);
       if (history.length > MAX_HISTORY) history.shift();
       
@@ -416,7 +361,7 @@
 
   function showHistory() {
     toggleMenu();
-    alert(history.slice(-10).join('\n'));
+    alert(history.slice(-10).join('\n') || 'No history yet');
   }
 
   async function copyResult() {
@@ -427,6 +372,22 @@
       alert('Copy failed. Check permissions.');
     }
   }
+
+  // Expose functions to window so onclick works
+  window.handleKey = handleKey;
+  window.append = append;
+  window.clearAll = clearAll;
+  window.del = del;
+  window.toggleNegate = toggleNegate;
+  window.moveLeft = moveLeft;
+  window.moveRight = moveRight;
+  window.calculate = calculate;
+  window.toggleShift = toggleShift;
+  window.toggleMenu = toggleMenu;
+  window.openMode = openMode;
+  window.setMode = setMode;
+  window.showHistory = showHistory;
+  window.copyResult = copyResult;
 
   document.addEventListener('keydown', (e) => {
     if ((e.key >= '0' && e.key <= '9') || e.key === '.') append(e.key);
